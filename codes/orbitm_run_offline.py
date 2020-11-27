@@ -1,14 +1,38 @@
 # -*- coding: utf-8 -*-
-""" #########################################################################
 
-Automating Orbit Maintenance and Thruster Sizing via STK10 AstroGator
-Created by Samuel Low, DSO National Laboratories, on Mon Oct 12 10:18:25 2020
+###############################################################################
+###############################################################################
+##                                                                           ##
+##     _____ ___  ____  ___  _____       ______                              ##
+##    |  _  | _ \|  _ \|_ _||_   _|     |      |                             ##
+##    | |_| |   <|  _ < | |   | |       | \  / |  _                          ##
+##    |_____|_|\_|____/|___|  |_|       |_|\/|_| |_|                         ##
+##                                                     v 0.1                 ##
+##                                                                           ##
+##    FILE DESCRIPTION:                                                      ##
+##                                                                           ##
+##    This routine runs the orbit maintenance simulation following the       ##
+##    decay model that I had simplified in 2018. The link to my paper is     ##
+##    below. This routine does not require STK or any external libraries     ##
+##    besides the basic imports you see below. It also runs at a fraction    ##
+##    of a second, as compared to a full STK simulation with AstroGator,     ##
+##    because it does not actually compute the orbit propagation, but it     ##
+##    computes the nominal decay value based on the model, and solves only   ##
+##    a two-body Kepler's equation, whereas STK does the propagation with    ##
+##    remarkably high fidelity and thus is expected to be more accurate.     ##
+##    In general, use this offline routine if you simply need a quick ball-  ##
+##    park figure for your mission's Delta-V needs. Otherwise, use STK's.    ##
+##                                                                           ##
+##    Link: https://digitalcommons.usu.edu/smallsat/2018/all2018/364/        ##
+##                                                                           ##
+##    Written by Samuel Y. W. Low.                                           ##
+##    First created 12-10-2020 10:18 AM (+8 GMT)                             ##
+##    Last modified 25-11-2020 09:38 AM (+8 GMT)                             ##
+##                                                                           ##
+###############################################################################
+###############################################################################
 
-Notes: This code is quite difficult to understand even with my comments.
-If the reader wants to fully understand the code, it is best to first go
-through the STK Object Model API, documentation, and tutorial if necessary.
 
-######################################################################### """
 
 # Import basic utilities
 import os
@@ -21,7 +45,8 @@ import matplotlib.pyplot as plt
 
 """ #########################################################################
 
-TO THE USER: YOU MAY CHANGE THE PARAMETERS BELOW ACCORDING TO YOUR SCENARIO.
+TO THE USER: DO NOT CHANGE PARAMETERS BELOW. CHANGE IT DIRECTLY IN THE GUI,
+OR CHANGE IT MANUALLY IN THE CONFIG.TXT FILE!
 
 ######################################################################### """
 
@@ -31,7 +56,7 @@ def orbm_run_offline(tstart, tfinal,
                      maintenance_tolerance,
                      maintenance_margin,
                      maintenance_fro,
-                     sc_mass):
+                     sc_mass, isp_min, isp_max):
 
     ###########################################################################
     ###########################################################################
@@ -39,8 +64,8 @@ def orbm_run_offline(tstart, tfinal,
     print("You are now running ORBITM's offline orbit maintenance. \n")
     
     # For thruster sizing, what range of Isp and fuel mass is needed?
-    plot_Isp_Min = 200.0 # N s
-    plot_Isp_Max = 1400.0 # N s
+    plot_Isp_Min = isp_min # s
+    plot_Isp_Max = isp_max # s
     
     # As a rule of thumb, frozen repeat orbit maintenance generally takes about
     # 02x as much Delta-V per thrust as regular altitude maintenance due to the 
@@ -137,13 +162,13 @@ def orbm_run_offline(tstart, tfinal,
     def DragAccel(R,SMA):
         Alt = R - (EARTHRADEQT*1000)
         AreaMassRatio = sc_area_d / sc_mass
-        SolRadConst = 4.5e-6
-        RefFactor = 0.25
-        SolarAreaMassRatio = sc_area_r / sc_mass
+        #SolRadConst = 4.5e-6
+        #RefFactor = 0.25
+        #SolarAreaMassRatio = sc_area_r / sc_mass
         V = Velocity(R,SMA)
         FDrag = 0.5*(AtmosDensity(Alt/1000))*sc_Cd*AreaMassRatio*(V**2)
-        FSolar = SolRadConst*(1+RefFactor)*(SolarAreaMassRatio)
-        return FDrag + FSolar
+        #FSolar = SolRadConst*(1+RefFactor)*(SolarAreaMassRatio)
+        return FDrag
     
     # The decay rate of the altitude (dR/dt) in meters (see reference).
     def DecayRate(R, SMA):
