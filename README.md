@@ -70,5 +70,9 @@ This project is open source. If you would like to contribute to this project, ad
 
 **I am also looking for users experienced in NASA's GMAT program to automate orbit maintenance routines uing Python. If you like open source, and you enjoy orbital mechanics, do consider adding your contributions here for other GMAT users too!**
 
+Finally, if you felt that OrbitM was useful in your research, please do credit and cite my paper (the APA format is below)!
+
+**Low, S. Y. W., &; Chia, Y. X. (2018). “Assessment of Orbit Maintenance Strategies for Small Satellites”, 32nd Annual AIAA/USU Conference on Small Satellites, Logan, Utah, Utah State University, USA.**
+
 If you have any other queries feel free to reach out to me at:
 sammmlow@gmail.com
