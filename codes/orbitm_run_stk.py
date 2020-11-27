@@ -11,19 +11,12 @@
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
-##    This routine runs the orbit maintenance simulation following the       ##
-##    decay model that I had simplified in 2018. The link to my paper is     ##
-##    below. This routine does not require STK or any external libraries     ##
-##    besides the basic imports you see below. It also runs at a fraction    ##
-##    of a second, as compared to a full STK simulation with AstroGator,     ##
-##    because it does not actually compute the orbit propagation, but it     ##
-##    computes the nominal decay value based on the model, and solves only   ##
-##    a two-body Kepler's equation, whereas STK does the propagation with    ##
-##    remarkably high fidelity and thus is expected to be more accurate.     ##
-##    In general, use this offline routine if you simply need a quick ball-  ##
-##    park figure for your mission's Delta-V needs. Otherwise, use STK's.    ##
+##    This code is quite difficult to understand even with my comments.      ##
+##    If the reader wants to understand the code, it is best to first go     ##
+##    through the STK Object Model API, documentation, and tutorial.         ##
 ##                                                                           ##
-##    Link: https://digitalcommons.usu.edu/smallsat/2018/all2018/364/        ##
+##    Important note, make sure you close any running instances of STK.      ##
+##    (i.e. check your task manager)                                         ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
 ##    First created 12-10-2020 10:18 AM (+8 GMT)                             ##
@@ -31,14 +24,6 @@
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
-
-# Notes: This code is quite difficult to understand even with my comments.
-# If the reader wants to fully understand the code, it is best to first go
-# through the STK Object Model API, documentation, and tutorial if necessary.
-
-# Important note, make sure you close the main STK application before running.
-# Make sure also that there are no instances of STK running in the background
-# (i.e. check your task manager)
 
 # Import basic utilities
 import os
@@ -50,12 +35,6 @@ import matplotlib.pyplot as plt
 
 # Needed to interact with COM
 from comtypes.client import CreateObject
-
-""" #########################################################################
-
-TO THE USER: YOU MAY CHANGE THE PARAMETERS BELOW ACCORDING TO YOUR SCENARIO.
-
-######################################################################### """
 
 def orbm_run_stk(orbm_mode, tstart, tfinal,
                  sc_Cd, sc_area_d, sc_Ck, sc_area_a, sc_Cr, sc_area_r,
