@@ -32,18 +32,6 @@
 ###############################################################################
 ###############################################################################
 
-""" #########################################################################
-
-Automating Orbit Maintenance and Thruster Sizing via STK10 AstroGator
-Created by Samuel Low, DSO National Laboratories, on Mon Oct 12 10:18:25 2020
-Last 
-
-Notes: This code is quite difficult to understand even with my comments.
-If the reader wants to fully understand the code, it is best to first go
-through the STK Object Model API, documentation, and tutorial if necessary.
-
-######################################################################### """
-
 # Notes: This code is quite difficult to understand even with my comments.
 # If the reader wants to fully understand the code, it is best to first go
 # through the STK Object Model API, documentation, and tutorial if necessary.
