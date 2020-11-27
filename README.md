@@ -11,9 +11,9 @@ Once you input your orbit and satellite parameters, the software will output a m
 
 ### How do I use Orbit.M?
 
-The software can be run as long as your Python comes with TKinter, NumPy, Matplotlib, and among other very standard Python libraries. If you do not have Python, I recommend using the [Anaconda installer](https://www.anaconda.com/), and running it on Spyder 4 simply because that's what I'm using right now.
+First things first, some eligibility checks: The software can be run as long as your Python comes with TKinter, NumPy, Matplotlib, and among other very standard Python libraries. If you do not have Python, I recommend using the [Anaconda installer](https://www.anaconda.com/), and running it on Spyder 4 simply because that's what I'm using right now.
 
-The software can be started by running the Python file **orbitm.py** in the main directory (which is equivalent to the directory you see on the master branch on ORBITM's github page). You can select to use 
+Now, the software can be started by running the Python file **orbitm.py** in the main directory (which is equivalent to the directory you see on the master branch on ORBITM's github page). You can select to use 
 
 
 ** THE REST OF THIS README AND THE PROJECT IS STILL UNSTABLE AND UNDER CONSTRUCTION **
