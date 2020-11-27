@@ -64,15 +64,15 @@ On the other hand, STK computes a full orbit propagation, inclusive of all the h
 
 ![Orbit.M - Flow Chart for Orbit Maintenance with STK Astrogator](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_flowchart_stk.png)
 
+### Some Final Notes:
+
+I am also looking for users experienced in NASA's GMAT program to automate orbit maintenance routines uing Python. If you like open source, and you enjoy orbital mechanics, do consider adding your contributions here for other GMAT users too!
+
+This project is open source. If you would like to contribute to this project, add in new features, or enhance existing atmospheric models etc, please free free to fork my repo. Or, if you had felt that OrbitM was useful in your research, please do give the due credit and cite my paper or this project (the APA format is below)!
+
+Low, S. Y. W., &; Chia, Y. X. (2018). “Assessment of Orbit Maintenance Strategies for Small Satellites”, 32nd Annual AIAA/USU Conference on Small Satellites, Logan, Utah, Utah State University, USA.
+
 ### Contact:
-
-This project is open source. If you would like to contribute to this project, add in new features, or enhance existing atmospheric models etc, please free free to fork my repo.
-
-**I am also looking for users experienced in NASA's GMAT program to automate orbit maintenance routines uing Python. If you like open source, and you enjoy orbital mechanics, do consider adding your contributions here for other GMAT users too!**
-
-Finally, if you felt that OrbitM was useful in your research, please do credit and cite my paper (the APA format is below)!
-
-**Low, S. Y. W., &; Chia, Y. X. (2018). “Assessment of Orbit Maintenance Strategies for Small Satellites”, 32nd Annual AIAA/USU Conference on Small Satellites, Logan, Utah, Utah State University, USA.**
 
 If you have any other queries feel free to reach out to me at:
 sammmlow@gmail.com
