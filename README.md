@@ -54,15 +54,15 @@ The program will also output a time-schedule for orbit maintenance in the main d
 
 **Do note that you can scale your fuel mass requirements in the line plots by increasing the Maintenance Mission Margin parameter in the GUI.** A value of 1.0 implies that the program will compute the fuel mass and Delta-V equivalently needed to counter 100% of the drag effects you encounter. If you would like to have a margin of 3x amount of fuel, then input 3.0 as your mission margin.
 
-### What is the difference between using Sam's orbit maintenance simulator and STK's?:
+### What is the difference between using Sam's and STK's simulator?:
 
 My own model, as aforementioned, is a simplified decay model that solves for the decay at each time step in closed-form. Thus, no true orbit propagation is computed (i.e. no computation of state vectors, no Runge-Kutta integration and all that). In fact, only the orbit radial position scalar is computed by solving for Kepler's equation for the two-body case in each time step. This was done because we actually only need the altitude (and not the full set of state vectors) in order to estimate the atmospheric density. This saves us a lot of computational time using my model, albeit with some accuracy loss. The atmospheric density model used is the US Standard Atmosphere 1976 Model [(see PDF here)](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_outp_550km.png). A rough flow chart of using Sam's Model works is as follows:
 
-![Orbit.M - Flow Chart for Sam's Decay Computer](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_outp_550km.png)
+![Orbit.M - Flow Chart for Sam's Decay Computer](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_flowchart_sams.png)
 
 On the other hand, STK computes a full orbit propagation, inclusive of all the high precision perturbing forces as per the diagram below. The default Jacchia-Roberts atmospheric density from STK's HPOP was used. ORBITM takes only the computed Delta-V values from STK, as well as the thrust time-schedule "deltaV.txt" file. A rough flow chart, using STK's Astrogator module, with a high precision orbit propagator (HPOP), works as follows:
 
-![Orbit.M - Flow Chart for Orbit Maintenance with STK Astrogator](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_outp_550km.png)
+![Orbit.M - Flow Chart for Orbit Maintenance with STK Astrogator](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_flowchart_stk.png)
 
 ### Contact:
 
