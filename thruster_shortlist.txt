@@ -1,0 +1,5 @@
+COMPANY         MODEL           ISP_S           FUEL_MASS_KG    THRUST_N        END
+NANOAVIONICS    EPSS-C1K        213             0.220           1.000           END
+BUSEK           BHT-200         1238            1.200           0.013           END
+LAJP            HEET-05         960             1.600           0.0052          END
+ALIENA          MUSIC           1000            3.000           0.004           END
