@@ -1,4 +1,4 @@
-![Orbit.M - Orbit Maintenance Analysis for LEO in Python](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_logo_large.png =400x)
+![Orbit.M - Orbit Maintenance Analysis for LEO in Python](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_logo_large.png =400x118)
 
 ### What is Orbit.M?
 
