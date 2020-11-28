@@ -20,7 +20,7 @@ If you would like to use the STK AstroGator module in STK10 or STK11 as a high p
 
 Now, the software can be started by running the Python file **orbitm.py** in the main directory (which is equivalent to the directory you see on the master branch on ORBITM's github page). You should see a GUI that looks like the one below, pop up:
 
-![Orbit.M - GUI running on TKinter](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_screenshot.png)
+![Orbit.M - GUI running on TKinter](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_screencap.png)
 
 You can fill in your spacecraft and orbit parameters through the GUI (quite self-explanatory), which actually updates it in a "config.txt" file. You can alternatively update it in the "config.txt" file manually, but it is not recommended since then the software can't check for errors (e.g. a negative drag coefficient was typed into the config file which would crash the program).
 
@@ -58,11 +58,11 @@ The program will also output a time-schedule for orbit maintenance in the main d
 
 My own model, as aforementioned, is a simplified decay model that solves for the decay at each time step in closed-form. Thus, no true orbit propagation is computed (i.e. no computation of state vectors, no Runge-Kutta integration and all that). In fact, only the orbit radial position scalar is computed by solving for Kepler's equation for the two-body case in each time step. This was done because we actually only need the altitude (and not the full set of state vectors) in order to estimate the atmospheric density. This saves us a lot of computational time using my model, albeit with some accuracy loss. The atmospheric density model used is the US Standard Atmosphere 1976 Model [(see PDF here)](https://github.com/sammmlow/ORBITM/blob/master/docs/USSA1976.pdf). A rough flow chart of using Sam's Model works is as follows:
 
-![Orbit.M - Flow Chart for Sam's Decay Computer](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_flowchart_sams.png)
+![Orbit.M - Flow Chart for Sam's Decay Computer](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_flow_sams.png)
 
 On the other hand, STK computes a full orbit propagation, inclusive of all the high precision perturbing forces as per the diagram below. The default Jacchia-Roberts atmospheric density from STK's HPOP was used. ORBITM takes only the computed Delta-V values from STK, as well as the thrust time-schedule "deltaV.txt" file. A rough flow chart, using STK's Astrogator module, with a high precision orbit propagator (HPOP), works as follows:
 
-![Orbit.M - Flow Chart for Orbit Maintenance with STK Astrogator](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_flowchart_stk.png)
+![Orbit.M - Flow Chart for Orbit Maintenance with STK Astrogator](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_flow_stk.png)
 
 ### Some Final Notes:
 
