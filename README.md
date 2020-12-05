@@ -28,7 +28,7 @@ Next, before you run ORBITM, you should open up the "thruster_shortlist.txt" fil
 
 Now, you can run ORBITM.
 
-### How do I use Orbit.M specifically?
+### How do I interpret the output results in Orbit.M?
 
 Below, we have ran three scenarios for ORBITM - each is a circular orbit at 63.4 degrees inclination, at 450km, 500km, and 550km mean altitude respectively.
 
