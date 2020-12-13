@@ -20,9 +20,11 @@ If you would like to use the STK AstroGator module in STK10 or STK11 as a high p
 
 Now, the software can be started by running the Python file **orbitm.py** in the main directory (which is equivalent to the directory you see on the master branch on ORBITM's github page). You should see a GUI that looks like the one below, pop up:
 
-![Orbit.M - GUI running on TKinter](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_screencap.png)
+![Orbit.M - GUI running on TKinter](https://raw.githubusercontent.com/sammmlow/ORBITM/master/gui/orbm_screenshot.png)
 
 You can fill in your spacecraft and orbit parameters through the GUI (quite self-explanatory), which actually updates it in a "config.txt" file. You can alternatively update it in the "config.txt" file manually, but it is not recommended since then the software can't check for errors (e.g. a negative drag coefficient was typed into the config file which would crash the program).
+
+Do note, that albedo and radiation effects are not modelled in the fast (Sam's) compute mode. However, they are toggled when using STK10 and STK11.
 
 Next, before you run ORBITM, you should open up the "thruster_shortlist.txt" file on the main ORBITM directory, and fill in any thrusters you wish to size your missions against. Some thrusters I had previously been aware of are written inside this shortlist as an example. The purpose of this shortlist is to graphically compare its Isp and fuel capacity to the suitability of your mission later on.
 
