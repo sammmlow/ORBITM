@@ -127,8 +127,8 @@ def orbm_run_offline(tstart, tfinal,
     ###########################################################################
     ###########################################################################
     
-    from codes.orbitm_function_atmUS1976 import AtmosDensity
-    from codes.orbitm_function_keplersolve import SolveKepEqn
+    from codes.orbitm_func_atmos import AtmosDensity
+    from codes.orbitm_func_kepler import SolveKepEqn
     
     # Define all useful constants here
     J2CONST = 0.00108263 #J2 constant

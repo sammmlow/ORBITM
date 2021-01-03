@@ -21,9 +21,9 @@
 import tkinter
 
 # Import local libraries.
-from codes import orbitm_gui
+from codes import orbitm_tkinter_ui
 
 # Initialise the GUI.
 root = tkinter.Tk()
-root_gui = orbitm_gui.run_gui( root )
+root_gui = orbitm_tkinter_ui.run_gui( root )
 root.mainloop()
