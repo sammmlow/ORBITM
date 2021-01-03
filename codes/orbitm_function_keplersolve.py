@@ -23,5 +23,5 @@ def SolveKepEqn(M,e):
         E2 = E1 - (fn/fd)
         residual = abs(E2-E1) # Compute residual
         E1 = E2 # Update the eccentric anomaly
-    
+        
     return E2
