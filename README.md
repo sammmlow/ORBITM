@@ -68,7 +68,7 @@ On the other hand, STK computes a full orbit propagation, inclusive of all the h
 
 ### Some Final Notes:
 
-I am also looking for users experienced in NASA's GMAT program to automate orbit maintenance routines uing Python. If you like open source, and you enjoy orbital mechanics, do consider adding your contributions here for other GMAT users too!
+I am also looking for users experienced in NASA's GMAT program to automate orbit maintenance routines using Python. If you like open source, and you enjoy orbital mechanics, do consider adding your contributions here for other GMAT users too!
 
 This project is open source. If you would like to contribute to this project, add in new features, or enhance existing atmospheric models etc, please free free to fork my repo. Or, if you had felt that OrbitM was useful in your research, please do give the due credit and cite my paper or this project (the APA format is below)!
 
