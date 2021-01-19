@@ -90,12 +90,13 @@ def orbm_run_offline(tstart, tfinal,
                    'Sep':9, 'Oct':10,'Nov':11,'Dec':12}
     
     def timestr2datetime(string):
-        dt = datetime.datetime(int(string[6:10]),
-                               int(months_dict[string[2:5]]),
-                               int(string[0]),
-                               int(string[11:13]),
-                               int(string[14:16]),
-                               int(string[17:19]))
+        strSplit = string.split()
+        dt = datetime.datetime(int(strSplit[2]),
+                               int(months_dict[strSplit[1]]),
+                               int(strSplit[0]),
+                               int(strSplit[3][0:2]),
+                               int(strSplit[3][3:5]),
+                               int(strSplit[3][6:8]))
         return dt
     
     # Read the start epoch string as a datetime object

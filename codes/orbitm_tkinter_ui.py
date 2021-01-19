@@ -41,8 +41,8 @@ class run_gui:
         
         # Initialise the basic text labels (found in the configuration file):
         self.txt0  = 'Choose your orbit simulation program:'
-        self.txt1  = 'Start Epoch (e.g. 1 Jan 2012 12:00:00.000):'
-        self.txt2  = 'Final Epoch (e.g. 1 Jan 2015 12:00:00.000):'
+        self.txt1  = 'Start Epoch (e.g. 1-Jan-2012-12:00:00.000):'
+        self.txt2  = 'Final Epoch (e.g. 1-Jan-2015-12:00:00.000):'
         self.txt3  = 'Spacecraft Atmospheric Drag Coefficient (Cd):'
         self.txt4  = 'Spacecraft Atmospheric Drag Surface Area (m^2):'
         self.txt5  = 'Spacecraft Albedo Pressure Coefficient (Ck):'
@@ -355,14 +355,14 @@ class run_gui:
             self.errtx00.configure(text='No program?')
         
         # Check for the first epoch string.            
-        if len(inps['tstart']) != 23 or inps['tstart'].count('-') != 3:
+        if len(inps['tstart']) > 24 or inps['tstart'].count('-') != 3:
             self.errtx01.configure(text='Invalid! Check the epoch string!')
         else:
             self.var01.set(inps['tstart'])
             self.errtx01.configure(text='')
         
         # Check for the final epoch string
-        if len(inps['tfinal']) != 23 or inps['tfinal'].count('-') != 3:
+        if len(inps['tfinal']) > 24 or inps['tfinal'].count('-') != 3:
             self.errtx02.configure(text='Invalid! Check the epoch string!')
         else:
             self.var02.set(inps['tfinal'])
@@ -536,15 +536,15 @@ class run_gui:
             error_flag = False
         
         # Check for the first epoch string.
-        if len(self.var01.get()) != 23 or self.var01.get().count('-') != 3:
+        if len(self.var01.get()) > 24 or self.var01.get().count('-') != 3:
             self.errtx01.configure(text='Invalid! Check the epoch string!')
             error_flag = False
         else:
             self.errtx01.configure(text='')
         
         # Check for the final epoch string
-        if len(self.var02.get()) != 23 or self.var02.get().count('-') != 3:
-            self.errtx02.configure(text='Invalid! Check for 4-letter ID.')
+        if len(self.var02.get()) > 24 or self.var02.get().count('-') != 3:
+            self.errtx02.configure(text='Invalid! Check the epoch string.')
             error_flag = False
         else:
             self.errtx02.configure(text='')
