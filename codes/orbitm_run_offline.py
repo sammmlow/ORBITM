@@ -7,7 +7,7 @@
 ##    |  _  | _ \|  _ \|_ _||_   _|     |      |                             ##
 ##    | |_| |   <|  _ < | |   | |       | \  / |  _                          ##
 ##    |_____|_|\_|____/|___|  |_|       |_|\/|_| |_|                         ##
-##                                                     v 0.1                 ##
+##                                                     v 1.0                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
@@ -27,7 +27,7 @@
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
 ##    First created 12-10-2020 10:18 AM (+8 GMT)                             ##
-##    Last modified 25-11-2020 09:38 AM (+8 GMT)                             ##
+##    Last modified 30-03-2021 08:33 PM (+8 GMT)                             ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -38,7 +38,6 @@
 import os
 import math
 import datetime
-import comtypes
 import numpy as np
 import datetime
 import matplotlib.pyplot as plt
@@ -241,7 +240,7 @@ def orbm_run_offline(tstart, tfinal,
         if smaxis < ((orb_a-maintenance_tolerance)*1000):
             DV, time_elapsed = HohmannTransferDV(rd)
             thrustcount += 1
-            thrust_str = str(thrustcount) + "Maintain.Hohmann "
+            thrust_str = str(thrustcount) + " Maintain.Hohmann "
             thrust_str += str(tstart_dt) + " "
             thrust_str += str(DV) + " \n"
             deltaV_file.write(thrust_str)
@@ -297,7 +296,28 @@ def orbm_run_offline(tstart, tfinal,
     ###################################################################### """
     
     # Now we compare the mission propulsion requirements against thrusters.
-    thr_file = open("thruster_shortlist.txt","r")
+    try:
+        thr_file = open("thruster_shortlist.txt","r")
+    except:
+        
+        # Otherwise, generate the file
+        thr_file = open("thruster_shortlist.txt","w")
+        thr_file.write("COMPANY         ")
+        thr_file.write("MODEL           ")
+        thr_file.write("ISP_S           ")
+        thr_file.write("FUEL_MASS_KG    ")
+        thr_file.write("THRUST_N        ")
+        thr_file.write("END \n")
+        thr_file.write("ALIENA          ")
+        thr_file.write("MUSIC           ")
+        thr_file.write("1000            ")
+        thr_file.write("3.000           ")
+        thr_file.write("0.004           ")
+        thr_file.write("END \n")
+        thr_file.close()
+        
+        # Now, try to open the file
+        thr_file = open("thruster_shortlist.txt","r")
     
     thr_compn = []
     thr_model = []

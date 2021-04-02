@@ -7,7 +7,7 @@
 ##    |  _  | _ \|  _ \|_ _||_   _|     |      |                             ##
 ##    | |_| |   <|  _ < | |   | |       | \  / |  _                          ##
 ##    |_____|_|\_|____/|___|  |_|       |_|\/|_| |_|                         ##
-##                                                     v 0.1                 ##
+##                                                     v 1.0                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
@@ -20,7 +20,7 @@
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
 ##    First created 12-10-2020 10:18 AM (+8 GMT)                             ##
-##    Last modified 25-11-2020 09:38 AM (+8 GMT)                             ##
+##    Last modified 30-03-2021 08:33 PM (+8 GMT)                             ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -30,7 +30,6 @@ import os
 import datetime
 import comtypes
 import numpy as np
-import datetime as dt
 import matplotlib.pyplot as plt
 
 # Needed to interact with COM

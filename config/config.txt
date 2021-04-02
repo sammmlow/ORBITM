@@ -26,13 +26,13 @@ I: orbsim 1
 I: tstart 1-Jan-2015-12:00:00.000
 ~: 
 ~: Input the Final Epoch String (e.g. 1-Jan-2015-12:00:00.000)
-I: tfinal 1-Apr-2016-12:00:00.000
+I: tfinal 1-Jan-2016-12:00:00.000
 ~:
 ~: Input the Spacecraft Atmospheric Drag Coefficient (Cd)
 I: sc_Cd 2.3
 ~: 
 ~: Input the Spacecraft Atmospheric Drag Surface Area (m^2)
-I: sc_Ad 20.0
+I: sc_Ad 2.28
 ~: 
 ~: Input the Spacecraft Albedo Pressure Coefficient (Ck)
 I: sc_Ck 1.0
@@ -47,10 +47,10 @@ I: sc_Cr 1.0
 I: sc_Ar 1.0
 ~:
 ~: Input the Orbit Semi-Major Axis (km)
-I: orb_a 6928.14
+I: orb_a 6878.14
 ~: 
 ~: Input the Orbit Eccentricity (no units)
-I: orb_e 0.00143075
+I: orb_e 1e-05
 ~: 
 ~: Input the Orbit Inclination (degrees)
 I: orb_i 63.4
@@ -65,16 +65,16 @@ I: orb_w 90.0
 I: orb_m 45.0
 ~: 
 ~: Set the Maintenance Tolerance Band (km)
-I: orbm_tolr 0.5
+I: orbm_tolr 5.0
 ~: 
 ~: Set the Maintenance Mission Margin (1.0 = 100%)
-I: orbm_marg 1.0
+I: orbm_marg 1.25
 ~:
 ~: Simulate the orbit maintenance of a frozen repeat orbit (True/False)?
 I: orbm_fro_flag True
 ~:
 ~: Input the Spacecraft Wet Mass (kg)
-I: sc_mass 500.0
+I: sc_mass 200.0
 ~:
 ~: For plotting purposes, input x-axis minimum for Isp (s).
 I: isp_min 50.0
