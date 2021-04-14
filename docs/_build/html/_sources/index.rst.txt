@@ -30,11 +30,11 @@ ORBITM
 
 |linkedin| |orcid|
 
-ORBITM stands for the **Orbit Maintenance and Propulsion Sizing Tool**, and it is an open-source, easy-to-use, free-ware orbit maintenance simulator and propulsion sizing tool, for anyone with a Python 3 installation. The software comes with its own built-in orbit decay model and maintenance simulator, and it is also interface-able with AGI's Systems Tool Kit (STK) as an alternative simulator.
+ORBITM stands for the **Orbit Maintenance and Propulsion Sizing Tool**, and it is an open-source, easy-to-use, free-ware orbit maintenance simulator and propulsion sizing tool, for anyone with a Python 3 installation. The software comes with its own built-in orbit decay model and maintenance simulator, a life-time estimator, and it is also interface-able with AGI's Systems Tool Kit (STK) as an alternative mode of simulation.
 
-The objective of ORBITM is to allow for a quick sizing of low Earth orbit (LEO) mission lifetimes, sized against propulsion units of the user's choosing. The user may input into the UI their orbital parameters, spacecraft properties (mass, area, drag parameters etc), and the software will compute your desired ΔV necessary for the mission, track the altitude profile over time, and plot the thruster-fuel profile that satisfies the orbit maintenance needs of your mission.
+The objective of ORBITM is to allow for a quick sizing of low Earth orbit (LEO) mission lifetime, while sizing the mission against propulsion units of the user's choosing. The user may input into the UI their orbital parameters, spacecraft properties (mass, area, drag parameters etc), and the software will compute your desired ΔV necessary for the mission, track the altitude profile over time, and plot the thruster-fuel profile that satisfies the orbit maintenance needs of your mission.
 
-**Why was ORBITM created?** In the New Space operating paradigm, the space engineering model no longer competes using the slow, sequential, and risk-intolerant development process. Agile development demands re-iteration of spacecraft designs quickly. Every iteration of a new spacecraft structure (for example, a change in choice of solar panels, or a new radar reflector type) changes the drag characteristics and mission life-time of LEO missions.
+**Why was ORBITM created?** There are two key reasons behind ORBITM. First, the proliferation of tens of thousands of LEO satellites in our near future mandates a quick and efficient means of estimating the lifetime of not just the orbiters but also of debris. The second reason is that ORBITM can also be used to support rapid iterations of spacecraft designs in agile development. For example, different iterations of solar panels or radar reflector designs that are proposed frequently, would impact the drag characteristics and mission life-time. ORBITM allows for the rapid ball-park assessments of such scenarios.
 
 .. figure:: /_images/orbm_rationale.png
     :align: center
@@ -57,6 +57,7 @@ However, in the second mode, you would need a valid `STK Astrogator <https://www
 
 .. note:: ORBITM was designed for low Earth orbits. Thus, the working range of altitudes, before loss of atmospheric density accuracies, should be bounded within 86 - 1,000 km.
 
+.. warning:: ORBITM was **not designed for high precision**, and thus the life-time estimation **cannot be used for re-entry and descent** positioning estimations.
 
 
 1. Installation
@@ -113,7 +114,29 @@ Now, you can run ORBITM. If you are a licensed STK user and you would like to us
 3. Interpreting Results
 -----------------------
 
-To interpret the results, we explore three example scenarios for ORBITM - each is a circular orbit at 63.4 degrees inclination, at 450km, 500km, and 550km mean altitude respectively.
+After a successful ORBITM run, you would expect two output text files in the main directory, and three Matplotlib figures.
+
+The first text file **"output_summary_<mode>.txt"** is a summary of the lifetime (i.e. how long the spacecraft can last **without** orbit maintenance).
+
+::
+    
+    Lifetime decay is estimated to be on 13 May 2027 16:54:31.252 after 29940 orbits.
+    The lifetime is 5.4 years. 
+    The total impulse needed: 2233.4388819714236 
+    The total Delta-V (m/s) needed is 13.137875776302492
+
+The second text file **"output_manoeuvre_<mode>.txt"** is an estimate of the orbit maintenance manoeuvre schedule.
+
+::
+    
+    1 Maintain.Hohmann 2022-03-01 11:40:00 2.1896281088566925 
+    2 Maintain.Hohmann 2022-04-29 12:07:49 2.1896767040214486 
+    3 Maintain.Hohmann 2022-06-27 12:35:38 2.1896387651453866 
+    4 Maintain.Hohmann 2022-08-25 13:03:27 2.189679576264574 
+    5 Maintain.Hohmann 2022-10-23 13:31:16 2.1896504433114723 
+    6 Maintain.Hohmann 2022-12-21 13:59:05 2.1896153519034436 
+
+To interpret the graphical results, we explore three example scenarios for ORBITM - each is a circular orbit at 63.4 degrees inclination, at 450km, 500km, and 550km mean altitude respectively.
 
 The plots in blue correspond to **"Sam's Simulator"**. The plots in orange correspond to using **STK 10** Astrogator, with a high precision orbit propagator, and it uses Astrogator's Automatic Sequences feature to boost the orbit up whenever the altitude of the spacecraft crosses the minimum of the maintenance tolerance band. In both orbit maintenance modes, the ΔV values were computed using a first order Taylor expansion to the Vis-Visa equation.
 
