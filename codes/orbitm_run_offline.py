@@ -27,7 +27,7 @@
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
 ##    First created 12-10-2020 10:18 AM (+8 GMT)                             ##
-##    Last modified 30-03-2021 08:33 PM (+8 GMT)                             ##
+##    Last modified 03-04-2021 09:06 PM (+8 GMT)                             ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -87,6 +87,10 @@ def orbm_run_offline(tstart, tfinal,
     months_dict = {'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4,
                    'May':5, 'Jun':6, 'Jul':7, 'Aug':8,
                    'Sep':9, 'Oct':10,'Nov':11,'Dec':12}
+    
+    months_dict_inv = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr',
+                       '05':'May','06':'Jun','07':'Jul','08':'Aug',
+                       '09':'Sep','10':'Oct','11':'Nov','12':'Dec'}
     
     def timestr2datetime(string):
         strSplit = string.split()
@@ -166,9 +170,9 @@ def orbm_run_offline(tstart, tfinal,
         #RefFactor = 0.25
         #SolarAreaMassRatio = sc_area_r / sc_mass
         V = Velocity(R,SMA)
-        FDrag = 0.5*(AtmosDensity(Alt/1000))*sc_Cd*AreaMassRatio*(V**2)
+        AccDrag = 0.5*(AtmosDensity(Alt/1000))*sc_Cd*AreaMassRatio*(V**2)
         #FSolar = SolRadConst*(1+RefFactor)*(SolarAreaMassRatio)
-        return FDrag
+        return AccDrag
     
     # The decay rate of the altitude (dR/dt) in meters (see reference).
     def DecayRate(R, SMA):
@@ -189,7 +193,107 @@ def orbm_run_offline(tstart, tfinal,
         # Returns (Delta_V (m/s), Time_Elapsed (seconds))
         return totalDV, Time_Elapsed
     
+    ############################################################################
+    ############################################################################
+    
     # Initialise all the parameters needed to do the run
+    decay_alt = 0.0 # The decay amount in meters
+    total_DV = 0.0 # Total Delta-V used (m/s)
+    thrustcount = 0 # Counting the number of thrusts needed
+    smaxis = orb_a * 1000 # Init the semi-major axis in meters
+    meananom = np.deg2rad(orb_m) # Init the mean anomaly in radians
+    
+    ############################################################################
+    ############################################################################
+    
+    # Now we need to setup the time sequence to run the orbit decay
+    # simulation. We will use a simple Keplerian propagator, but there is no
+    # need to propagate all 6 orbit states - just solving for the radial
+    # distance is all we need to extract the atmospheric density.
+    
+    print("Running lifetime simulation now (this might take long). \n")
+    
+    # The life-time flag checks if satellite decays below ~86km Karman line.
+    lifetime_flag = False
+    total_duration = 0 # seconds
+    
+    while lifetime_flag == False and total_duration < 315360000:
+        
+        # Update the time step first. The lifetime computation will be sped up
+        # to 10X the speed of the orbit maintenance simulation.
+        tstart_dt = tstart_dt + (10 * tstep_dt)
+        total_duration += 10 * tstep 
+        
+        # First, we need to find the mean motion of the orbit at this instant.
+        keplperiod = OrbitPeriod(smaxis)
+        meanmotion = (2*np.pi) / keplperiod
+        
+        # Next, we can compute the mean anomaly at the next time step.
+        meananom = (meananom + (meanmotion * 10 * tstep)) % np.pi
+        
+        # We can solve for the eccentric anomaly orb_E via Newton-Raphson
+        # M = E - e*sin(E)
+        eccnanom = SolveKepEqn(meananom, orb_e)
+        
+        # Now, we can substitute orb_E to find the satellite radial distance.
+        rd = smaxis*(1-orb_e*np.cos(eccnanom))
+        
+        # Then, we can compute the decay rate (m/s), and apply it to the SMA.
+        decay_rate = DecayRate(rd, smaxis)
+        decay_alt = decay_rate * (tstep)
+        smaxis += decay_alt
+        
+        # Compute the current altitude
+        current_altitude = rd/1000 - EARTHRADEQT
+        
+        # Check the altitude.
+        if current_altitude < 100.0:
+            lifetime_flag = True
+            lifetime_dt = tstart_dt
+    
+    # Reset the time.
+    tstart_dt = timestr2datetime(tstart)
+    
+    # Check the status of the life time simulation.
+    # lifetime_flag == True ==> orbit decay has occurred within 10 years.
+    if lifetime_flag == True:
+        
+        # Construct the date-time string for the life time decay.
+        lifetime_date = str(lifetime_dt).split()[0]
+        lifetime_dd   = lifetime_date.split('-')[2]
+        lifetime_mm   = lifetime_date.split('-')[1]
+        lifetime_mm   = months_dict_inv[ lifetime_mm ] # Convert month string
+        lifetime_yyyy = lifetime_date.split('-')[0]
+        lifetime_time = str(lifetime_dt).split()[1] + '.000'
+        
+        # Compute the number of orbits before complete decay.
+        lifetime_days = str(round( total_duration / 86400 ))
+        lifetime_orbits = str(round(total_duration / OrbitPeriod(orb_a*1000)))
+        
+        # Construct the lifetime string to be printed out.
+        lifetime_str = "Lifetime decay is estimated to be on "
+        lifetime_str += lifetime_dd + ' '
+        lifetime_str += lifetime_mm + ' '
+        lifetime_str += lifetime_yyyy + ' '
+        lifetime_str += lifetime_time + ' '
+        lifetime_str += 'after ' + lifetime_orbits + ' orbits.'
+        lifetime_str += 'The lifetime is ' + lifetime_days + ' days. \n'
+        
+        # Print the life time message.
+        print(lifetime_str)
+    
+    # Check the status of the life time simulation.
+    # lifetime_flag == False ==> orbit decay has NOT occurred within 10 years.
+    if lifetime_flag == False:
+        
+        # Print the life time message.
+        lifetime_str = 'Lifetime did not decay within the 3650.0 day limit. \n'
+        print(lifetime_str)
+    
+    ############################################################################
+    ############################################################################
+    
+    # Re-initialise all the parameters needed to do the run
     decay_alt = 0.0 # The decay amount in meters
     total_DV = 0.0 # Total Delta-V used (m/s)
     thrustcount = 0 # Counting the number of thrusts needed
@@ -199,12 +303,14 @@ def orbm_run_offline(tstart, tfinal,
     # Initialise the lists for plotting
     sat_epochs, sat_altitude, sat_mean_sma = [], [], []
     
-    # Now we need to setup the time sequence to run the simulation.
-    # We will use a simple Keplerian propagator.
+    ############################################################################
+    ############################################################################
     
+    # Now, we setup the same time sequence, all over again, but this time,
+    # orbit maintenance manoeuvres will be included in the simulation.
     print("Running mission control sequence now (this might take long). \n")
+    deltaV_file = open("output_manoeuvre_offline.txt",'w')
     
-    deltaV_file = open("deltaV.txt",'w')
     while tstart_dt <= tfinal_dt:
         
         # Update the time step first.
@@ -260,9 +366,22 @@ def orbm_run_offline(tstart, tfinal,
     Isp = np.linspace(plot_Isp_Min, plot_Isp_Max, 500) # Isp axis, in (s)
     Mf = total_impulse / (Isp*9.81)
     
-    print("The total impulse needed: " + str(total_impulse) + " \n")
+    # Construct the summary information string objects
+    impulse_str = "The total impulse needed: "
+    impulse_str = impulse_str + str(total_impulse) + " \n"
+    deltaV_str = "The total Delta-V (m/s) needed is "
+    deltaV_str = deltaV_str + str(total_DV) + " \n"
     
-    print("The total Delta-V (m/s) needed is " + str(total_DV) + " \n")
+    # Log the summary information
+    summary_file = open("output_summary_offline.txt",'w')
+    summary_file.write(lifetime_str)
+    summary_file.write(impulse_str)
+    summary_file.write(deltaV_str)
+    summary_file.close()
+    
+    # Print the impulse and Delta-V requirements statement.
+    print(impulse_str)
+    print(deltaV_str)
     
     # Plotting of altitudes
     plt.figure(1)
@@ -335,8 +454,8 @@ def orbm_run_offline(tstart, tfinal,
             thr_force.append(str(line_split[4]))
     thr_file.close()
     
-    plot_Isp_Min = 200.0 # N s
-    plot_Isp_Max = 1250.0 # N s
+    # plot_Isp_Min = 200.0 # N s
+    # plot_Isp_Max = 1250.0 # N s
     bwidth = (plot_Isp_Max - plot_Isp_Min)/50
     
     barchart = plt.bar(thr_isp_s, thr_fuelm, width = bwidth, color='green')

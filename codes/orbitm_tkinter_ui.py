@@ -37,7 +37,7 @@ class run_gui:
         
         # Create the main frame and window.
         master.title('Orbit Maintenance and Propulsion Sizing')
-        master.geometry('1200x960')
+        master.geometry('960x960')
         
         # Initialise the basic text labels (found in the configuration file):
         self.txt0  = 'Choose your orbit simulation program:'

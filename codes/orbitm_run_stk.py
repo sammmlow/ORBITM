@@ -34,6 +34,7 @@ import matplotlib.pyplot as plt
 
 # Needed to interact with COM
 from comtypes.client import CreateObject
+from comtypes.client import GetActiveObject
 
 def orbm_run_stk(orbm_mode, tstart, tfinal,
                  sc_Cd, sc_area_d, sc_Ck, sc_area_a, sc_Cr, sc_area_r,
@@ -58,9 +59,9 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     stk_gui = True
     
     # User, check if you are using STK10 or STK11. By default, the comtypes GUID
-    # is using the STK10 GUID code that allows the Astrogator wrapper to be loaded.
-    # Without successful loading, the AgStkGatorLib file cannot be recognised and
-    # created in the comtypes gen folder, and AstroGator cannot be run.
+    # is using the STK10 GUID code that allows the Astrogator wrapper to load.
+    # Without successful loading, the AgStkGatorLib file cannot be recognised
+    # and created in the comtypes gen folder, and AstroGator cannot be run.
     
     # GUID for STK10: 90E096F9-9615-4BA8-BA23-680F8D236959
     # GUID for STK11: 090D317C-31A7-4AF7-89CD-25FE18F4017C
@@ -76,27 +77,13 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     # need for the thrusts to bring the SC above the reference to maintain the 
     # eastward-to-westward ground track shift.
     
-    """ #########################################################################
+    """ #######################################################################
     
     TO THE USER: DO NOT CHANGE ANY OF THE CODE BELOW, AS THE CODE IS HIGHLY
     DEPENDENT ON INTERFACING WITH THE RIGHT POINTERS TO THE RIGHT CLASSES.
     EDIT THE CODE BELOW, AT YOUR RISK, AND ONLY IF YOU KNOW WHAT YOU ARE DOING!
     
-    ######################################################################### """
-    
-    ##############################################################################
-    ##############################################################################
-    
-    # Define all useful constants here
-    J2CONST = 0.00108263 #J2 constant
-    UNIGCONST = 6.67408e-11
-    EARTHMASS = 5.97237e24 #in kg
-    EARTHRAD = 6371.140 #in km
-    EARTHRADEQT = 6378.140 #in km
-    MUU = UNIGCONST*EARTHMASS # GM
-    
-    ##############################################################################
-    ##############################################################################
+    ####################################################################### """
     
     # The program will now compute the total scenario time in seconds.
     
@@ -126,8 +113,8 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     # Compute the total scenario time in seconds
     tdelta = (tdelta_dt.days*86400) + tdelta_dt.seconds # int
     
-    ##############################################################################
-    ##############################################################################
+    ############################################################################
+    ############################################################################
     
     # The program will now compute what is the desired Delta-V per thrust
     # using a first order Taylor expansion of the Vis-Visa equation.
@@ -136,11 +123,33 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     velocity = ((398.6004415e12)/(orb_a*1000))**0.5
     delta_v = (0.25*velocity*maintenance_tolerance)/(orb_a * 1000) # km/s
     
-    ##############################################################################
-    ##############################################################################
+    ############################################################################
+    ############################################################################
+    
+    # First, try to close any existing STK applications.
+    print("Closing any pre-existing STK applications... \n")
+    print("Check if you need to save your existing scenarios? (Open the UI) \n")
+    # Check if the user is running in STK 10
+    if orbm_mode == 2:
+        try:
+            uiApp = GetActiveObject('STK10.Application')
+            uiApp.Quit()
+        except:
+            pass
+    
+    # Check if the user is running in STK 11
+    elif orbm_mode == 3:
+        try:
+            uiApp = GetActiveObject('STK11.Application')
+            uiApp.Quit()
+        except:
+            pass
+    
+    ############################################################################
+    ############################################################################
     
     # Start STK10 Application
-    print("Creating the STK application object. \n")
+    print("Creating a new STK application. \n")
     if orbm_mode == 2:
         uiApp = CreateObject("STK10.Application")
     elif orbm_mode == 3:
@@ -157,21 +166,100 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     print("Creating the STK scenario object. \n")
     stkRoot.NewScenario("Orbit_Maintenance")
     
-    # Get a reference to the scenario object (null if no scenario has been loaded)
+    # Get a reference to the scenario object (null if no scenario loaded)
     scenario = stkRoot.CurrentScenario
     scenario2 = scenario.QueryInterface(STKObjects.IAgScenario)
-    scenario2.StartTime = tstart
-    scenario2.StopTime  = tfinal
+    
+    # Set the time period for the scenario.
+    scenario2.SetTimePeriod( tstart, tfinal )
     
     #Reset STK to the new start time
     stkRoot.Rewind()
-        
-    ##############################################################################
-    ##############################################################################
+    
+    ############################################################################
+    ############################################################################
+    
+    # This segment will create the life-time test satellite and propagate it.
+    print("Creating the satellite (life-time) object. \n")
+    sat = scenario.Children.New(STKObjects.eSatellite, 'Lifetime')
+    sat2 = sat.QueryInterface(STKObjects.IAgSatellite)
+    
+    # You can gain access to the initial orbit state through the satellite's
+    # propagator object. In the block below, get a pointer to the interface
+    # IAgVePropagtorTwoBody. Then use that pointer to convert the orbit state
+    # into the classical representation, and obtain a pointer to the interface
+    # IAgOrbitStateClassical.
+    sat2.SetPropagatorType(STKObjects.ePropagatorTwoBody)
+    sat2prop = sat2.Propagator.QueryInterface(STKObjects.IAgVePropagatorTwoBody)
+    sat2init = sat2prop.InitialState.Representation
+    sat2state = sat2init.ConvertTo(STKUtil.eOrbitStateClassical)
+    sat2state2 = sat2state.QueryInterface(STKObjects.IAgOrbitStateClassical)
+    
+    # With the IAgOrbitStateClassical interface you will be able to set the values
+    # of the desired orbital elements.
+    
+    # The SizeShape property only provides a pointer to the IAgClassicalSizeShape
+    # interface, which does not immediately provide access to the semimajor axis
+    # or eccentricity values. To access those, you "cast" to the interface
+    # IAgClassicalSizeShapeSemimajorAxis provided by the object
+    # AgClassicalSizeShapeSemimajorAxis. 
+    sat2state2.SizeShapeType = STKObjects.eSizeShapeSemimajorAxis
+    sat2state2.SizeShape.QueryInterface(STKObjects.IAgClassicalSizeShapeSemimajorAxis).SemiMajorAxis = orb_a
+    sat2state2.SizeShape.QueryInterface(STKObjects.IAgClassicalSizeShapeSemimajorAxis).Eccentricity = orb_e
+    
+    # Set the inclination and argument of perigee
+    sat2state2.Orientation.Inclination = orb_i
+    sat2state2.Orientation.ArgOfPerigee = orb_w
+    
+    # For the RAAN, much as in the case of the semi-major axis and eccentricity,
+    # you must first specify the AscNodeType, then provide the value for the
+    # AscNode through the approriate interface.
+    sat2state2.Orientation.AscNodeType = STKObjects.eAscNodeRAAN
+    sat2state2.Orientation.AscNode.QueryInterface(STKObjects.IAgOrientationAscNodeRAAN).Value = orb_R
+    
+    # Set the mean anomaly
+    sat2state2.LocationType = STKObjects.eLocationMeanAnomaly
+    sat2state2.Location.QueryInterface(STKObjects.IAgClassicalLocationMeanAnomaly).Value = orb_m
+    
+    # Propagate the orbit
+    sat2prop.InitialState.Representation.Assign(sat2state2)
+    sat2prop.Propagate()
+    
+    # Prepare the STK Connect Command strings for the life-time computation.
+    setLifeTime              = 'SetLifetime */Satellite/Lifetime '
+    setLifeTimeDragCoeff     = setLifeTime + 'DragCoeff ' + str(sc_Cd)
+    setLifeTimeReflectCoeff  = setLifeTime + 'ReflectCoeff ' + str(sc_Cr)
+    setLifeTimeDragArea      = setLifeTime + 'DragArea ' + str(sc_area_d)
+    setLifeTimeSunArea       = setLifeTime + 'SunArea ' + str(sc_area_r)
+    setLifeTimeMass          = setLifeTime + 'Mass ' + str(sc_mass)
+    setLifeTimeLimitType     = setLifeTime + 'LimitType Duration'
+    setLifeTimeDurationLimit = setLifeTime + 'DurationLimit 3650'
+    setLifeTimeDensityModel  = setLifeTime + 'DensityModel Jacchia70Lifetime'
+    
+    # Execute the STK Connect Command strings for life-time computation settings.
+    stkRoot.ExecuteCommand( setLifeTimeDragCoeff     )
+    stkRoot.ExecuteCommand( setLifeTimeReflectCoeff  )
+    stkRoot.ExecuteCommand( setLifeTimeDragArea      )
+    stkRoot.ExecuteCommand( setLifeTimeSunArea       )
+    stkRoot.ExecuteCommand( setLifeTimeMass          )
+    stkRoot.ExecuteCommand( setLifeTimeLimitType     )
+    stkRoot.ExecuteCommand( setLifeTimeDurationLimit )
+    stkRoot.ExecuteCommand( setLifeTimeDensityModel  )
+    
+    # Execute the STK Connect Command strings for life-time computation.
+    resultsLifeTime = stkRoot.ExecuteCommand('Lifetime */Satellite/Lifetime')
+    lifetime_str = resultsLifeTime.Item(0) + " \n"
+    print(lifetime_str)
+    
+    # Finally, remove the test satellite used to compute the life time.
+    sat.Unload()
+    
+    ############################################################################
+    ############################################################################
     
     # This segment will create the test satellite and propagate it.
-    print("Creating the satellite object. \n")
-    satellite = scenario.Children.New(STKObjects.eSatellite, "satellite")
+    print("Creating the satellite object with orbit maintenance. \n")
+    satellite = scenario.Children.New(STKObjects.eSatellite, "Satellite")
     #print("Querying the IAgStkObject interface of the satellite. \n")
     satellite2 = satellite.QueryInterface(STKObjects.IAgSatellite)
     satellite2.SetPropagatorType(STKObjects.ePropagatorAstrogator) # Astrogator
@@ -250,29 +338,33 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     # Kozai-Iszak Mean SMA of the orbit. If the LEO crosses the mean SMA threshold
     # in the MCS, it will prompt the trigger of the ACS.
     
-    # Begin inserting the propagation with an apogee thrust.
-    Prop2Apo   = acs_seq.Insert(AgStkGatorLib.eVASegmentTypePropagate,'Prop2Apo','-')
-    ThrustApo  = acs_seq.Insert(AgStkGatorLib.eVASegmentTypeManeuver,'ThrustApo','-')
-    
-    # Now we query the interfaces for all of them.
-    Prop2Apo2 = Prop2Apo.QueryInterface(AgStkGatorLib.IAgVAMCSPropagate)
-    ThrustApo2 = ThrustApo.QueryInterface(AgStkGatorLib.IAgVAMCSManeuver)
-    
-    # We set the Prop2Apo segment to perform an orbit propagation to the apogee.
-    Prop2Apo2_SC = Prop2Apo2.StoppingConditions
-    Prop2Apo2_SC.Add('Apoapsis')
-    Prop2Apo2_SC.Cut('Duration') # Not sure why remove doesn't work
-    
-    # Then, we set the thruster fire levels at the apogee using a fixed thrust.
-    ThrustApo2.Maneuver.SetAttitudeControlType(AgStkGatorLib.eVAAttitudeControlThrustVector)
-    ThrustApo2_Vector = ThrustApo2.Maneuver.AttitudeControl.QueryInterface(AgStkGatorLib.IAgVAAttitudeControlImpulsiveThrustVector)
-    ThrustApo2_Vector.DeltaVVector.AssignCartesian(delta_v, 0.0, 0.0);
+    # If the user is not maintaining an orbit for a frozen repeat, a single
+    # thrust at the apogee should be good enough to raise its orbit.
+    if maintenance_fro == False:
+        
+        # Begin inserting the propagation with an apogee thrust.
+        Prop2Apo   = acs_seq.Insert(AgStkGatorLib.eVASegmentTypePropagate,'Prop2Apo','-')
+        ThrustApo  = acs_seq.Insert(AgStkGatorLib.eVASegmentTypeManeuver,'ThrustApo','-')
+        
+        # Now we query the interfaces for all of them.
+        Prop2Apo2 = Prop2Apo.QueryInterface(AgStkGatorLib.IAgVAMCSPropagate)
+        ThrustApo2 = ThrustApo.QueryInterface(AgStkGatorLib.IAgVAMCSManeuver)
+        
+        # We set the Prop2Apo segment to perform an orbit propagation to the apogee.
+        Prop2Apo2_SC = Prop2Apo2.StoppingConditions
+        Prop2Apo2_SC.Add('Apoapsis')
+        Prop2Apo2_SC.Cut('Duration') # Not sure why remove doesn't work
+        
+        # Then, we set the thruster fire levels at the apogee using a fixed thrust.
+        ThrustApo2.Maneuver.SetAttitudeControlType(AgStkGatorLib.eVAAttitudeControlThrustVector)
+        ThrustApo2_Vector = ThrustApo2.Maneuver.AttitudeControl.QueryInterface(AgStkGatorLib.IAgVAAttitudeControlImpulsiveThrustVector)
+        ThrustApo2_Vector.DeltaVVector.AssignCartesian(delta_v, 0.0, 0.0);
     
     # If the user is maintaining an orbit for a frozen repeat, a second perigee
     # thrust is needed in order to minimise disrupting the osculating eccentricity.
     if maintenance_fro == True:
         
-        # Continue inserting the propagation with the perigee thrust.
+        # Insert the propagation to perigee with the perigee thrust.
         Prop2Peri  = acs_seq.Insert(AgStkGatorLib.eVASegmentTypePropagate,'Prop2Peri','-')
         ThrustPeri = acs_seq.Insert(AgStkGatorLib.eVASegmentTypeManeuver,'ThrustPeri','-')
         
@@ -290,6 +382,24 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
         ThrustPeri2_Vector = ThrustPeri2.Maneuver.AttitudeControl.QueryInterface(AgStkGatorLib.IAgVAAttitudeControlImpulsiveThrustVector)
         ThrustPeri2_Vector.DeltaVVector.AssignCartesian(delta_v, 0.0, 0.0);
         
+        # Begin inserting the propagation with an apogee thrust.
+        Prop2Apo   = acs_seq.Insert(AgStkGatorLib.eVASegmentTypePropagate,'Prop2Apo','-')
+        ThrustApo  = acs_seq.Insert(AgStkGatorLib.eVASegmentTypeManeuver,'ThrustApo','-')
+        
+        # Now we query the interfaces for all of them.
+        Prop2Apo2 = Prop2Apo.QueryInterface(AgStkGatorLib.IAgVAMCSPropagate)
+        ThrustApo2 = ThrustApo.QueryInterface(AgStkGatorLib.IAgVAMCSManeuver)
+        
+        # We set the Prop2Apo segment to perform an orbit propagation to the apogee.
+        Prop2Apo2_SC = Prop2Apo2.StoppingConditions
+        Prop2Apo2_SC.Add('Apoapsis')
+        Prop2Apo2_SC.Cut('Duration') # Not sure why remove doesn't work
+        
+        # Then, we set the thruster fire levels at the apogee using a fixed thrust.
+        ThrustApo2.Maneuver.SetAttitudeControlType(AgStkGatorLib.eVAAttitudeControlThrustVector)
+        ThrustApo2_Vector = ThrustApo2.Maneuver.AttitudeControl.QueryInterface(AgStkGatorLib.IAgVAAttitudeControlImpulsiveThrustVector)
+        ThrustApo2_Vector.DeltaVVector.AssignCartesian(delta_v, 0.0, 0.0);
+    
     # At this stage, the automatic sequence oject has been successfully built.
     # We just need to know how to call the automatic sequence whenever the stop
     # conditions have been met (i.e. when the satellite crosses the threshold)
@@ -329,9 +439,6 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     
     # 2 - Altitude values.
     sat_altitude = []
-    
-    # 3 - Total Delta-V consumed.
-    sat_total_dV = 0.0 # m/s
     
     # Get the Kozai-Izsak Mean data providers pointer and interface to it.
     sat_ki_mean  = satellite.DataProviders.Item("Kozai-Izsak Mean")
@@ -395,7 +502,7 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     sat_deltaV2_Array = np.array(sat_deltaV2_Data.DataSets.ToArray())
     
     # Extract the Delta-V values
-    deltaV_file = open("deltaV.txt",'w')
+    deltaV_file = open("output_manoeuvre_stk.txt",'w')
     for thrust in sat_deltaV2_Array:
         thrust_str  = thrust[0] + ' '
         thrust_str += thrust[1] + ' '
@@ -412,9 +519,22 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     Isp = np.linspace(plot_Isp_Min, plot_Isp_Max, 500) # Isp axis, in (s)
     Mf = total_impulse / (Isp*9.81)
     
-    print("The total impulse needed: " + str(total_impulse) + " \n")
+    # Construct the summary information string objects
+    impulse_str = "The total impulse needed: "
+    impulse_str = impulse_str + str(total_impulse) + " \n"
+    deltaV_str = "The total Delta-V (m/s) needed is "
+    deltaV_str = deltaV_str + str(total_deltaV * 1000) + " \n"
     
-    print("The total Delta-V (m/s) needed is " + str(total_deltaV * 1000) + " \n")
+    # Log the summary information
+    summary_file = open("output_summary_stk.txt",'w')
+    summary_file.write(lifetime_str)
+    summary_file.write(impulse_str)
+    summary_file.write(deltaV_str)
+    summary_file.close()
+    
+    # Print the impulse and Delta-V requirements statement.
+    print(impulse_str)
+    print(deltaV_str)
     
     # Plotting of altitudes
     plt.figure(1)
@@ -488,8 +608,8 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
             thr_force.append(str(line_split[4]))
     thr_file.close()
     
-    plot_Isp_Min = 200.0 # N s
-    plot_Isp_Max = 1250.0 # N s
+    # plot_Isp_Min = 200.0 # N s
+    # plot_Isp_Max = 1250.0 # N s
     bwidth = (plot_Isp_Max - plot_Isp_Min)/50
     
     barchart = plt.bar(thr_isp_s, thr_fuelm, width = bwidth, color='green')
