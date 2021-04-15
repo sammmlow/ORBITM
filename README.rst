@@ -32,7 +32,7 @@ Orbit.M is an open-source and free orbit maintenance simulator and propulsion si
 
 It stands for the **Orbit Maintenance and Propulsion Sizing Tool**, and it comes with its own built-in orbit decay model and maintenance simulator. Alternatively, Orbit.M can also be used to interface with and automate orbit maintenance simulations using AGI's Systems Tool Kit (STK) as an alternative simulator, through the STK Integration Object Model libraries.
 
-.. note:: A valid license for STK 10 and 11, with Astrogator and Integration modules, is needed for interfacing with STK.
+A valid license for STK 10 and 11, with Astrogator and Integration modules, is needed for interfacing with STK.
 
 The objective of Orbit.M is to allow for a quick sizing of low Earth orbit (LEO) mission lifetimes, sized against propulsion units of the user's choosing. The user can enter the parameters of their intended mission, the orbital elements, the spacecraft characteristics, and Orbit.M would compute the ΔV necessary to counteract drag forces throughout the mission, while sizing it against your choices of thrusters (depending on your inputs in the **"thruster_shortlist.txt"** file).
 
