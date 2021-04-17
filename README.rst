@@ -62,7 +62,7 @@ For full documentation, please refer to the `Orbit.M Read-The-Docs. <https://orb
 Final Notes
 -----------
 
-This project is free, and open-source. If you would like to contribute to this project, add in new features, or enhance existing atmospheric models etc, please free free to branch the master repository and collaborate with me. I am also hoping to interface Orbit.M's use with other astrodynamics softwares like GMAT, and improve on existing features such as improving the accuracy of the atmospheric density models etc.
+This project is free, and open-source. If you would like to contribute to this project, add in new features, or enhance existing atmospheric models etc, please feel free to fork this repository and make any pull requests if you'd like to collaborate with me. I am also hoping to interface Orbit.M's use with other astrodynamics softwares like GMAT, and improve on existing features such as improving the accuracy of the atmospheric density models etc.
 
 If you had felt that OrbitM was useful in your research, please do give the due credit and cite my paper or this project!
 
