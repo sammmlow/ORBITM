@@ -228,8 +228,12 @@ def orbm_run_offline(tstart, tfinal,
         keplperiod = OrbitPeriod(smaxis)
         meanmotion = (2*np.pi) / keplperiod
         
-        # Next, we can compute the mean anomaly at the next time step.
-        meananom = (meananom + (meanmotion * 10 * tstep)) % np.pi
+        # Next, we can compute the mean anomaly at the next time step. The 
+        # complex-looking expression below is just meant to keep the mean
+        # anomaly bounded within +/- 180 degrees rather than +/- 360.
+        meananom = (meananom + np.pi + (meanmotion*10*tstep)) % (2*np.pi)-np.pi
+        
+        orbCM = ((orbC[5] + math.pi + (nC * t)) % (2 * math.pi)) - math.pi
         
         # We can solve for the eccentric anomaly orb_E via Newton-Raphson
         # M = E - e*sin(E)
