@@ -233,8 +233,6 @@ def orbm_run_offline(tstart, tfinal,
         # anomaly bounded within +/- 180 degrees rather than +/- 360.
         meananom = (meananom + np.pi + (meanmotion*10*tstep)) % (2*np.pi)-np.pi
         
-        orbCM = ((orbC[5] + math.pi + (nC * t)) % (2 * math.pi)) - math.pi
-        
         # We can solve for the eccentric anomaly orb_E via Newton-Raphson
         # M = E - e*sin(E)
         eccnanom = SolveKepEqn(meananom, orb_e)
