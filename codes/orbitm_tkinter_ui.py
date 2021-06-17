@@ -25,7 +25,7 @@
 # IMPORT PUBLIC LIBRARIES
 import tkinter as tk
 from PIL import Image, ImageTk
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join
 
 # IMPORT THE MAIN ROUTINES
 from codes.orbitm_run_offline import orbm_run_offline
@@ -87,7 +87,7 @@ class run_gui:
         
         # Define the path to the LEOGPS logo file.
         orbitm_logo = dirname(dirname(abspath(__file__)))
-        orbitm_logo = orbitm_logo + '\gui\orbm_logo.png'
+        orbitm_logo = join(orbitm_logo, 'gui', 'orbm_logo.png')
         
         # Configure the background image and load the logo.
         image = Image.open( orbitm_logo )

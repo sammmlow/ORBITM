@@ -43,6 +43,14 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
                  maintenance_margin,
                  maintenance_fro,
                  sc_mass, isp_min, isp_max):
+    
+    print(orbm_mode, tstart, tfinal,
+                 sc_Cd, sc_area_d, sc_Ck, sc_area_a, sc_Cr, sc_area_r,
+                 orb_a, orb_e, orb_i, orb_R, orb_w, orb_m,
+                 maintenance_tolerance,
+                 maintenance_margin,
+                 maintenance_fro,
+                 sc_mass, isp_min, isp_max)
 
     # The parameters below are not used, but will be set to defaults.
     thr_TankPressure    = 0.1 # tank pressure (Pa)
@@ -171,7 +179,12 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     scenario2 = scenario.QueryInterface(STKObjects.IAgScenario)
     
     # Set the time period for the scenario.
-    scenario2.SetTimePeriod( tstart, tfinal )
+    try:
+        scenario2.StartTime = tstart
+        scenario2.StopTime = tfinal
+    except:
+        scenario2.StopTime = tfinal
+        scenario2.StartTime = tstart
     
     #Reset STK to the new start time
     stkRoot.Rewind()
@@ -190,8 +203,9 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     # into the classical representation, and obtain a pointer to the interface
     # IAgOrbitStateClassical.
     sat2.SetPropagatorType(STKObjects.ePropagatorTwoBody)
-    sat2prop = sat2.Propagator.QueryInterface(STKObjects.IAgVePropagatorTwoBody)
-    sat2init = sat2prop.InitialState.Representation
+    sat2prop  = sat2.Propagator
+    sat2prop2 = sat2prop.QueryInterface(STKObjects.IAgVePropagatorTwoBody)
+    sat2init = sat2prop2.InitialState.Representation
     sat2state = sat2init.ConvertTo(STKUtil.eOrbitStateClassical)
     sat2state2 = sat2state.QueryInterface(STKObjects.IAgOrbitStateClassical)
     
@@ -222,8 +236,8 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     sat2state2.Location.QueryInterface(STKObjects.IAgClassicalLocationMeanAnomaly).Value = orb_m
     
     # Propagate the orbit
-    sat2prop.InitialState.Representation.Assign(sat2state2)
-    sat2prop.Propagate()
+    sat2prop2.InitialState.Representation.Assign(sat2state2)
+    sat2prop2.Propagate()
     
     # Prepare the STK Connect Command strings for the life-time computation.
     setLifeTime              = 'SetLifetime */Satellite/Lifetime '
@@ -456,7 +470,7 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
         epochstr = sat_ki_mean_sma[epoch][0] # Read raw epoch string
         epochlis = epochstr.split()
         mean_sma = sat_ki_mean_sma[epoch][1] # Read raw mean SMA string
-        
+        print(mean_sma)
         yy = int(epochlis[2])
         mm = int(months_dict[epochlis[1]])
         dd = int(epochlis[0])
@@ -504,6 +518,7 @@ def orbm_run_stk(orbm_mode, tstart, tfinal,
     # Extract the Delta-V values
     deltaV_file = open("output_manoeuvre_stk.txt",'w')
     for thrust in sat_deltaV2_Array:
+        print(thrust)
         thrust_str  = thrust[0] + ' '
         thrust_str += thrust[1] + ' '
         thrust_str += thrust[2] + ' '

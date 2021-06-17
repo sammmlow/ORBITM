@@ -180,7 +180,7 @@ def orbm_run_offline(tstart, tfinal,
         return (-1)*(DragAcceleration)*(OrbitPeriod(SMA))/(math.pi)
     
     # Define a function that computes the Delta-V needed for Hohmann transfer.
-    def HohmannTransferDV(rd):
+    def HohmannTransferDV(rd,maintenance_tolerance,maintenance_fro):
         R1 = rd
         if maintenance_fro == True:
             R2 = rd + (2*maintenance_tolerance*1000)
@@ -346,14 +346,23 @@ def orbm_run_offline(tstart, tfinal,
         # If triggered, we will simply re-adjust the orbit as if a Hohmann
         # transfer had taken place.
         if smaxis < ((orb_a-maintenance_tolerance)*1000):
-            DV, time_elapsed = HohmannTransferDV(rd)
+            DV, time_elapsed = HohmannTransferDV(rd,
+                                                 maintenance_tolerance,
+                                                 maintenance_fro)
             thrustcount += 1
             thrust_str = str(thrustcount) + " Maintain.Hohmann "
             thrust_str += str(tstart_dt) + " "
             thrust_str += str(DV) + " \n"
             deltaV_file.write(thrust_str)
             tstart_dt = tstart_dt+datetime.timedelta(seconds=int(time_elapsed))
-            smaxis = orb_a*1000 # Reset the semi-major axis
+            
+            # Reset the semi-major axis
+            if maintenance_fro == False:
+                smaxis = orb_a*1000 
+            else:
+                smaxis = (orb_a + maintenance_tolerance) * 1000
+            
+            # Rack up the DV count.
             total_DV += DV
     
     # Close the Delta-V file
@@ -474,6 +483,6 @@ def orbm_run_offline(tstart, tfinal,
                  bartext,
                  ha='center', va='bottom')
         barcount += 1
-    
+    plt.show()
     return None
     # END OF SCRIPT
