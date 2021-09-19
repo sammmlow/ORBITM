@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-
 ###############################################################################
 ###############################################################################
 ##                                                                           ##
-##     _____ ___  ____  ___  _____       ______                              ##
-##    |  _  | _ \|  _ \|_ _||_   _|     |      |                             ##
-##    | |_| |   <|  _ < | |   | |       | \  / |  _                          ##
-##    |_____|_|\_|____/|___|  |_|       |_|\/|_| |_|                         ##
+##     _____ ___  ___  ___  _____      __  __                                ##
+##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                               ##
+##    | |_| |   <| _ < | |   | |   _  | \  / |                               ##
+##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                               ##
 ##                                                     v 1.0                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
@@ -24,9 +22,24 @@
 
 import math
 
-def AtmosDensity(R):
+# Input R is the altitude from the surface of the Earth (km)
+def density(R):
+    '''Atmospheric density model based on the U.S. Standard Atmosphere 1976.
+    Returns the atmospheric density (km/m^3) given an altitude input (km).
+    Valid only for altitudes between 86km to 1000km.
     
-    # Input R is the altitude from the surface of the Earth (km)
+
+    Parameters
+    ----------
+    R : float
+        Radial altitude from the surface of the Earth (km)
+
+    Returns
+    -------
+    density : float
+        Atmospheric density (kg/m^3)
+
+    '''
     
     co = [0,0,0,0,0] # Coefficient
     

@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-
 ###############################################################################
 ###############################################################################
 ##                                                                           ##
-##     _____ ___  ____  ___  _____       ______                              ##
-##    |  _  | _ \|  _ \|_ _||_   _|     |      |                             ##
-##    | |_| |   <|  _ < | |   | |       | \  / |  _                          ##
-##    |_____|_|\_|____/|___|  |_|       |_|\/|_| |_|                         ##
+##     _____ ___  ___  ___  _____      __  __                                ##
+##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                               ##
+##    | |_| |   <| _ < | |   | |   _  | \  / |                               ##
+##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                               ##
 ##                                                     v 1.0                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
@@ -27,7 +25,7 @@ import math
 # Given some mean anomaly, M, find the eccentric anomaly E from the relation
 # M = E - e*sin(E), where M is input in radians.
 
-def SolveKepEqn(M,e):
+def solve_kepler(M,e):
     E1 = M # Initialise eccentric anomaly
     residual = 1.0 # Initialise convergence residual
     while residual >= 0.00001:

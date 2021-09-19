@@ -1,11 +1,11 @@
 ###############################################################################
 ###############################################################################
 ##                                                                           ##
-##     _____ ___  ____  ___  _____       ______                              ##
-##    |  _  | _ \|  _ \|_ _||_   _|     |      |                             ##
-##    | |_| |   <|  _ < | |   | |       | \  / |  _                          ##
-##    |_____|_|\_|____/|___|  |_|       |_|\/|_| |_|                         ##
-##                                                     v 0.1                 ##
+##     _____ ___  ___  ___  _____      __  __                                ##
+##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                               ##
+##    | |_| |   <| _ < | |   | |   _  | \  / |                               ##
+##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                               ##
+##                                                     v 1.0                 ##
 ##                                                                           ##
 ##    Configuration File (For User-Defined Inputs)                           ##
 ##                                                                           ##
@@ -19,59 +19,44 @@
 ###############################################################################
 ###############################################################################
 ~:
-~: Input the orbit simulation program choice (1=Sam's, 2=STK, 3=GMAT).
-I: orbsim 1
+~: Input the orbit simulation program choice (1=Sam's, 2=STK10, 3=STK11).
+I: orbsim 2
 ~:
 ~: Input the Start Epoch String (e.g. 1-Jan-2012-12:00:00.000)
-I: tstart 1-Jan-2023-12:00:00.000
+I: tstart 1-Jan-2022-12:00:00.000
 ~: 
 ~: Input the Final Epoch String (e.g. 1-Jan-2015-12:00:00.000)
-I: tfinal 1-Jun-2023-12:00:00.000
+I: tfinal 1-Jun-2022-12:00:00.000
 ~:
 ~: Input the Spacecraft Atmospheric Drag Coefficient (Cd)
 I: sc_Cd 2.2
 ~: 
 ~: Input the Spacecraft Atmospheric Drag Surface Area (m^2)
 I: sc_Ad 2.28
-~: 
-~: Input the Spacecraft Albedo Pressure Coefficient (Ck)
-I: sc_Ck 0.0001
-~: 
-~: Input the Spacecraft Albedo Pressure Surface Area (m^2)
-I: sc_Ak 0.0001
-~: 
-~: Input the Spacecraft Radiation Pressure Coefficient (Cr)
-I: sc_Cr 0.0001
-~: 
-~: Input the Spacecraft Radiation Pressure Surface Area (m^2)
-I: sc_Ar 0.0001
 ~:
 ~: Input the Orbit Semi-Major Axis (km)
 I: orb_a 6936.137
 ~: 
 ~: Input the Orbit Eccentricity (no units)
-I: orb_e 0.0001
+I: orb_e 0.001
 ~: 
 ~: Input the Orbit Inclination (degrees)
 I: orb_i 10.0
 ~: 
 ~: Input the Orbit Right Asc. Node (degrees)
-I: orb_R 0.0001
+I: orb_R 0.0
 ~:
 ~: Input the Orbit Arg. Perigee (degrees)
-I: orb_w 0.0001
+I: orb_w 0.0
 ~: 
 ~: Input the Orbit Mean Anomaly (degrees)
-I: orb_m 0.0001
+I: orb_m 0.0
 ~: 
 ~: Set the Maintenance Tolerance Band (km)
 I: orbm_tolr 1.0
-~: 
-~: Set the Maintenance Mission Margin (1.0 = 100%)
-I: orbm_marg 1.0
 ~:
 ~: Simulate the orbit maintenance of a frozen repeat orbit (True/False)?
-I: orbm_fro_flag True
+I: orbm_fro_flag False
 ~:
 ~: Input the Spacecraft Wet Mass (kg)
 I: sc_mass 170.0
