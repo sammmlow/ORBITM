@@ -5,7 +5,7 @@
 ##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                               ##
 ##    | |_| |   <| _ < | |   | |   _  | \  / |                               ##
 ##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                               ##
-##                                                     v 1.0                 ##
+##                                                     v 1.1                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
@@ -28,8 +28,8 @@
 ##    on Small Satellites, Logan, Utah, Utah State University, USA.          ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    First created 12-OCT-2020 10:18 AM (+8 GMT)                            ##
-##    Last modified 18-SEP-2021 17:29 PM (-7 GMT)                            ##
+##    First created 12-Oct-2020 10:18 AM (+8 GMT)                            ##
+##    Last modified 19-Sep-2021 22:27 PM (-7 GMT)                            ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -52,6 +52,63 @@ def orbmrun(tstart, tfinal, sc_Cd, sc_area_d,
             orb_a, orb_e, orb_i, orb_R, orb_w, orb_m,
             maintenance_tolerance, maintenance_fro,
             sc_mass, isp_min, isp_max):
+    '''This function runs a rapid orbit maintenance scenario using a 
+    simplified orbit decay model from the paper "Assessment of Orbit
+    Maintenance Strategies for Small Satellites (Small Sat 2018)". The
+    atmospheric density model used is the US Standard Atmosphere 1976,
+    from the file "atmos.py". No full orbit propagation is performed here.
+    
+    Parameters
+    ----------
+    tstart : string
+        Epoch start string (in format 1-Jan-1900-12:00:00.000) 
+    tfinal : string
+        Epoch final string (in format 1-Jan-1900-12:00:00.000) 
+    sc_Cd : float
+        Drag coefficient of spacecraft (Cd)
+    sc_area_d : float
+        Average drag surface area of spacecraft (m^2)
+    orb_a : float
+        Initial osculating semi-major axis (km)
+    orb_e : float
+        Initial osculating eccentricity (between 0 and 1)
+    orb_i : float
+        Initial osculating inclination (degrees)
+    orb_R : float
+        Initial osculating right ascension of ascending node (degrees)
+    orb_w : float
+        Initial osculating argument of periapsis (degrees)
+    orb_m : float
+        Initial mean anomaly (degrees)
+    maintenance_tolerance : float
+        The tolerance band in which a thruster fire would be triggers. For
+        example, if the nominal altitude was 400km, with a 10km tolerance,
+        then thrusters will be triggered when the altitude crosses 390km.
+    maintenance_fro : int
+        Flag for the user to perform orbit maintenance only, or orbit
+        maintenance with the inclusion of a repeating ground track.
+    sc_mass : float
+        Wet mass of the spacecraft (including fuel, in kg)
+    isp_min : float
+        For propulsion sizing plot; the axis minimum for specific impulse (s).
+    isp_max : float
+        For propulsion sizing plot; the axis maximum for specific impulse (s).
+
+    Returns
+    -------
+    sat_epochs : list
+        An N-length list comprising a "linspace" vector of time in seconds
+        for the entire simulation, starting at t = 0s.
+    sat_altitude : list
+        An N-length list comprising the geodetic altitudes of the satellite.
+    sat_mean_sma : list
+        An N-length list comprising the mean semi-major axis of the satellite.
+    total_DV : float
+        Total Delta-V used in the orbit maintenance scenario (m/s).
+    total_impulse : float
+        Total impulse used in the orbit maintenance scenario (kg m/s).
+
+    '''
     
     print("You are now running ORBITM's offline orbit maintenance. \n")
     

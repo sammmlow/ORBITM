@@ -1,7 +1,15 @@
-.. ORBITM documentation master file, created by
-   sphinx-quickstart on Tue Mar 30 18:25:40 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. 
+   ###########################################################################
+   ###########################################################################
+   ##                                                                       ##
+   ##     _____ ___  ___  ___  _____      __  __                            ##
+   ##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                           ##
+   ##    | |_| |   <| _ < | |   | |   _  | \  / |                           ##
+   ##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                           ##
+   ##                                                     v 1.1             ##
+   ##                                                                       ##
+   ###########################################################################
+   ###########################################################################
    
 .. |docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat-square
    :target: https://orbitm.readthedocs.io/en/latest/
@@ -15,11 +23,18 @@
 .. |linkedin| image:: https://img.shields.io/badge/LinkedIn-sammmlow-blue.svg
    :target: https://www.linkedin.com/in/sammmlow
 
-.. image:: /_images/orbm_logo.png
+.. image:: /_static/orbitm_logo.png
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+|
+
+:Github: https://github.com/sammmlow/LEOGPS
+:Documents: https://leogps.readthedocs.io/en/latest/
+:Version: 1.3 (Latest)
+:Author: Samuel Y. W. Low
+
+|docs| |license| |linkedin| |orcid|
+
+
 
 ORBITM
 ------
@@ -217,3 +232,8 @@ For collaborations, reach out to me: sammmlow@gmail.com (Samuel Y. W. Low)
 |linkedin| |orcid|
 
 The project is licensed under the MIT license.
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:

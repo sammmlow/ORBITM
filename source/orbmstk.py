@@ -5,9 +5,16 @@
 ##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                               ##
 ##    | |_| |   <| _ < | |   | |   _  | \  / |                               ##
 ##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                               ##
-##                                                     v 1.0                 ##
+##                                                     v 1.1                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
+##                                                                           ##
+##    This function runs a full orbit maintenance scenario using STK         ##
+##    Astrogator (either v10 or v11). Note that the user must have a valid   ##
+##    license for STK Astrogator. The default atmospheric model used will    ##
+##    be the Jacchia-Roberts model. A full orbit propagation would be        ##
+##    performed, with STK GUI also being launched. Processing time will be   ##
+##    a lot slower than in the native Sams mode.                             ##
 ##                                                                           ##
 ##    This code is quite difficult to understand even with my comments.      ##
 ##    If the reader wants to understand the code, it is best to first go     ##
@@ -17,8 +24,8 @@
 ##    (i.e. check your task manager)                                         ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    First created 12-10-2020 10:18 AM (+8 GMT)                             ##
-##    Last modified 30-03-2021 08:33 PM (+8 GMT)                             ##
+##    First created 12-Oct-2020 10:18 AM (+8 GMT)                            ##
+##    Last modified 19-Sep-2021 22:27 PM (-7 GMT)                            ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -41,7 +48,67 @@ def orbmstk(orbm_mode, tstart, tfinal, sc_Cd, sc_area_d,
             orb_a, orb_e, orb_i, orb_R, orb_w, orb_m,
             maintenance_tolerance, maintenance_fro,
             sc_mass, isp_min, isp_max):
+    '''This function runs a full orbit maintenance scenario using STK
+    Astrogator (either v10 or v11). Note that the user must have a valid
+    license for STK Astrogator. The default atmospheric model used will be
+    the Jacchia-Roberts model. A full orbit propagation would be performed,
+    with STK GUI also being launched. Processing time will be a lot slower
+    than in the native Sams mode.
+    
+    Parameters
+    ----------
+    orbm_mode : int
+        Orbit simulation program choice (2 for STK10, 3 for STK11)
+    tstart : string
+        Epoch start string (in format 1-Jan-1900-12:00:00.000) 
+    tfinal : string
+        Epoch final string (in format 1-Jan-1900-12:00:00.000) 
+    sc_Cd : float
+        Drag coefficient of spacecraft (Cd)
+    sc_area_d : float
+        Average drag surface area of spacecraft (m^2)
+    orb_a : float
+        Initial osculating semi-major axis (km)
+    orb_e : float
+        Initial osculating eccentricity (between 0 and 1)
+    orb_i : float
+        Initial osculating inclination (degrees)
+    orb_R : float
+        Initial osculating right ascension of ascending node (degrees)
+    orb_w : float
+        Initial osculating argument of periapsis (degrees)
+    orb_m : float
+        Initial mean anomaly (degrees)
+    maintenance_tolerance : float
+        The tolerance band in which a thruster fire would be triggers. For
+        example, if the nominal altitude was 400km, with a 10km tolerance,
+        then thrusters will be triggered when the altitude crosses 390km.
+    maintenance_fro : int
+        Flag for the user to perform orbit maintenance only, or orbit
+        maintenance with the inclusion of a repeating ground track.
+    sc_mass : float
+        Wet mass of the spacecraft (including fuel, in kg)
+    isp_min : float
+        For propulsion sizing plot; the axis minimum for specific impulse (s).
+    isp_max : float
+        For propulsion sizing plot; the axis maximum for specific impulse (s).
 
+    Returns
+    -------
+    sat_epochs : list
+        An N-length list comprising a "linspace" vector of time in seconds
+        for the entire simulation, starting at t = 0s.
+    sat_altitude : list
+        An N-length list comprising the geodetic altitudes of the satellite.
+    sat_mean_sma : list
+        An N-length list comprising the mean semi-major axis of the satellite.
+    total_DV : float
+        Total Delta-V used in the orbit maintenance scenario (m/s).
+    total_impulse : float
+        Total impulse used in the orbit maintenance scenario (kg m/s).
+
+    '''
+    
     # The parameters below are not used, but will be set to defaults.
     thr_TankPressure    = 0.1 # tank pressure (Pa)
     thr_TankVolume      = 0.1 # tank volume (m^3)

@@ -5,7 +5,7 @@
 ##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                               ##
 ##    | |_| |   <| _ < | |   | |   _  | \  / |                               ##
 ##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                               ##
-##                                                     v 1.0                 ##
+##                                                     v 1.1                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
@@ -14,8 +14,8 @@
 ##    Valid only for altitudes between 86km to 1000km.                       ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    First created 24-05-2017 11:27:54 (+8 GMT)                             ##
-##    Last modified 22-10-2020 15:55:15 (+8 GMT)                             ##
+##    First created 24-May-2017 11:27 AM (+8 GMT)                            ##
+##    Last modified 19-Sep-2021 22:27 PM (-7 GMT)                            ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -28,7 +28,6 @@ def density(R):
     Returns the atmospheric density (km/m^3) given an altitude input (km).
     Valid only for altitudes between 86km to 1000km.
     
-
     Parameters
     ----------
     R : float

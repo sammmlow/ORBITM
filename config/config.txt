@@ -38,25 +38,25 @@ I: sc_Ad 2.28
 I: orb_a 6936.137
 ~: 
 ~: Input the Orbit Eccentricity (no units)
-I: orb_e 0.001
+I: orb_e 0.0001
 ~: 
 ~: Input the Orbit Inclination (degrees)
-I: orb_i 10.0
+I: orb_i 30.0
 ~: 
 ~: Input the Orbit Right Asc. Node (degrees)
-I: orb_R 0.0
+I: orb_R 90.0
 ~:
 ~: Input the Orbit Arg. Perigee (degrees)
-I: orb_w 0.0
+I: orb_w 45.0
 ~: 
 ~: Input the Orbit Mean Anomaly (degrees)
-I: orb_m 0.0
+I: orb_m -45.0
 ~: 
 ~: Set the Maintenance Tolerance Band (km)
 I: orbm_tolr 1.0
 ~:
 ~: Simulate the orbit maintenance of a frozen repeat orbit (True/False)?
-I: orbm_fro_flag False
+I: orbm_fro_flag True
 ~:
 ~: Input the Spacecraft Wet Mass (kg)
 I: sc_mass 170.0

@@ -5,7 +5,7 @@
 ##    |  _  | _ \| _ \|_ _||_   _|    |  \/  |                               ##
 ##    | |_| |   <| _ < | |   | |   _  | \  / |                               ##
 ##    |_____|_|\_|___/|___|  |_|  |_| |_|\/|_|                               ##
-##                                                     v 1.0                 ##
+##                                                     v 1.1                 ##
 ##                                                                           ##
 ##    FILE DESCRIPTION:                                                      ##
 ##                                                                           ##
@@ -14,7 +14,8 @@
 ##    (No inputs and outputs, this file only holds the GUI class object.     ##
 ##                                                                           ##
 ##    Written by Samuel Y. W. Low.                                           ##
-##    Last modified 15-SEP-2021 23:28 PM (-7 GMT)                            ##
+##    First created 27-Nov-2020 12:00 PM (+8 GMT)                            ##
+##    Last modified 19-Sep-2021 22:27 PM (-7 GMT)                            ##
 ##                                                                           ##
 ###############################################################################
 ###############################################################################
@@ -50,10 +51,10 @@ class RunGUI:
         in the GUI are correct. Second, it copies the GUI parameters into the
         config.txt file, overwriting it.
     clr( self )
-        Clears all existing relative orbit plots in the ORBITM GUI.
+        Clears all existing plots in the ORBITM GUI.
     run( self )
-        Run the ORBITM program using the leorun.py script and plots the
-        relative trajectory.
+        Run the ORBITM program using the orbmrun.py script (or the orbmstk.py
+        script if the user chooses and has a valid STK Astrogator license.
     '''
 
     def __init__(self, master):
@@ -395,12 +396,6 @@ class RunGUI:
     #########################################################################
     
     def cfg_R(self):
-        
-        '''
-        This method does two things. First, this method checks that all inputs
-        in config.txt are correct. Second, it copies the input parameters into
-        the GUI's TKinter variables.
-        '''
         
         # First, ask the user if he/she wishes to proceed.
         cfg_R_msg = 'Load parameters from the "config.txt" file? \n'
@@ -809,13 +804,6 @@ class RunGUI:
     #########################################################################
     
     def cfg_W(self):
-        
-        
-        '''
-        This method does two things. First, this method checks that all inputs
-        in the GUI are correct. Second, it copies the GUI parameters into the
-        config.txt file.
-        '''
         
         # First, ask the user if he/she wishes to proceed.
         cfg_W_msg = 'Save GUI parameters into the "config.txt" file? \n'
