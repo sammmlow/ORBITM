@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intepreting Results &mdash; ORBITM 1.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/orbitm_favicon.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Orbit Maintenance Model" href="docs_orbmaint.html" />
+    <link rel="prev" title="First Steps" href="docs_firststep.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #222A35" >
+            <a href="index.html" class="icon icon-home"> ORBITM
+            <img src="_static/orbitm_favicon2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="docs_overview.html">An Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_firststep.html">First Steps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Intepreting Results</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Orbit Maintenance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_orbmaint.html">Orbit Maintenance Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #222A35" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ORBITM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Intepreting Results</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/docs_interpreting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <img alt="_images/orbitm_logo.png" src="_images/orbitm_logo.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="intepreting-results">
+<h1>Intepreting Results<a class="headerlink" href="#intepreting-results" title="Permalink to this headline"></a></h1>
+<p>After a successful ORBITM run, you would expect two output text files in the main directory, and three Matplotlib figures.</p>
+<p>The first text file <strong>“output_summary.txt”</strong> is a summary of the lifetime (i.e. how long the spacecraft can last <strong>without</strong> orbit maintenance).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Lifetime</span> <span class="n">decay</span> <span class="ow">is</span> <span class="n">estimated</span> <span class="n">to</span> <span class="n">be</span> <span class="n">on</span> <span class="mi">13</span> <span class="n">May</span> <span class="mi">2027</span> <span class="mi">16</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mf">31.252</span> <span class="n">after</span> <span class="mi">29940</span> <span class="n">orbits</span><span class="o">.</span>
+<span class="n">The</span> <span class="n">lifetime</span> <span class="ow">is</span> <span class="mf">5.4</span> <span class="n">years</span><span class="o">.</span>
+<span class="n">The</span> <span class="n">total</span> <span class="n">impulse</span> <span class="n">needed</span><span class="p">:</span> <span class="mf">2233.4388819714236</span>
+<span class="n">The</span> <span class="n">total</span> <span class="n">Delta</span><span class="o">-</span><span class="n">V</span> <span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">s</span><span class="p">)</span> <span class="n">needed</span> <span class="ow">is</span> <span class="mf">13.137875776302492</span>
+</pre></div>
+</div>
+<p>The second text file <strong>“output_manoeuvres.txt”</strong> is an estimate of the orbit maintenance manoeuvre schedule.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="n">Maintain</span><span class="o">.</span><span class="n">Hohmann</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">01</span> <span class="mi">11</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">00</span> <span class="mf">2.1896281088566925</span>
+<span class="mi">2</span> <span class="n">Maintain</span><span class="o">.</span><span class="n">Hohmann</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span> <span class="mi">12</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">49</span> <span class="mf">2.1896767040214486</span>
+<span class="mi">3</span> <span class="n">Maintain</span><span class="o">.</span><span class="n">Hohmann</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">27</span> <span class="mi">12</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">38</span> <span class="mf">2.1896387651453866</span>
+<span class="mi">4</span> <span class="n">Maintain</span><span class="o">.</span><span class="n">Hohmann</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span> <span class="mi">13</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">27</span> <span class="mf">2.189679576264574</span>
+<span class="mi">5</span> <span class="n">Maintain</span><span class="o">.</span><span class="n">Hohmann</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">23</span> <span class="mi">13</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">16</span> <span class="mf">2.1896504433114723</span>
+<span class="mi">6</span> <span class="n">Maintain</span><span class="o">.</span><span class="n">Hohmann</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">21</span> <span class="mi">13</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">05</span> <span class="mf">2.1896153519034436</span>
+</pre></div>
+</div>
+<p>To interpret the graphical results, let us run a simple orbit maintenance scenario for a satellite in a 550km altitude circular orbit at 45 degrees inclination.</p>
+<p>The plots in blue correspond to <strong>“Sam’s Simulator”</strong>. The plots in orange correspond to using <strong>STK 10</strong> Astrogator, with a high precision orbit propagator, and it uses Astrogator’s Automatic Sequences feature to boost the orbit up whenever the altitude of the spacecraft crosses the minimum of the maintenance tolerance band. In both orbit maintenance modes, the ΔV values were computed using a first order Taylor expansion to the Vis-Visa equation.</p>
+<figure class="align-center" id="id1">
+<img alt="_images/orbmgui_full.jpg" src="_images/orbmgui_full.jpg" />
+<figcaption>
+<p><span class="caption-text">Figure 3.1 - Screenshot after running ORBITM, for a 550km orbit with a tolerance band of 1km</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The plot most relevant to mission planning that you would need is the top-most plot - the profile of the mission lifetime (in terms of total ΔV requirements) against the thruster specifications (bar charts). The height of the bar chart can be compared against the desired fuel mass needed, at the thruster’s specific impulse values (Isp, units in seconds). In other words, for each thruster’s Isp value, if the height of the bar chart (which represents the max fuel mass for that thruster, at that Isp) exceeds the fuel mass requirements of your mission at that particular Isp, then that thruster can satisfy your mission lifetime requirements.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The native <strong>“Sam’s Simulator”</strong> uses the US Standard Atmosphere 1976 as the atmospheric density model as a look-up table of coefficients in an exponential function (for speed), while the <strong>STK Mode</strong> uses the Jacchia Roberts atmospheric density model. Also, the native mode uses an approximated orbit decay model while <strong>STK Mode</strong> performs a full orbit propagation for all 6 states. Thus, running ORBITM with STK makes computation very much slower, and the ∆V values in both modes would differ, although in most cases they are close (and definitely in the same order of magnitude).</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="docs_firststep.html" class="btn btn-neutral float-left" title="First Steps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="docs_orbmaint.html" class="btn btn-neutral float-right" title="Orbit Maintenance Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Samuel Y. W. Low.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXX-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-XXXXXXX-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

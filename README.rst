@@ -32,9 +32,9 @@ Orbit.M is an open-source and free orbit maintenance simulator and propulsion si
 
 It stands for the **Orbit Maintenance and Propulsion Sizing Tool**, and it comes with its own built-in orbit decay model and maintenance simulator. Alternatively, Orbit.M can also be used to interface with and automate orbit maintenance simulations using AGI's Systems Tool Kit (STK) as an alternative simulator, through the STK Integration Object Model libraries.
 
-A valid license for STK 10 and 11, with Astrogator and Integration modules, is needed for interfacing with STK.
+A valid license for STK 10 and 11, with Astrogator and Integration modules, is needed for interfacing with STK. However, you do not require an STK license for interfacing with the native orbit maintenance simulation mode (or Sam's Mode).
 
-The objective of Orbit.M is to allow for a quick sizing of low Earth orbit (LEO) mission lifetimes, sized against propulsion units of the user's choosing. The user can enter the parameters of their intended mission, the orbital elements, the spacecraft characteristics, and Orbit.M would compute the ΔV necessary to counteract drag forces throughout the mission, while sizing it against your choices of thrusters (depending on your inputs in the **"thruster_shortlist.txt"** file).
+The objective of Orbit.M is to allow for a quick sizing of low Earth orbit (LEO) mission lifetimes, sized against propulsion units of the user's choosing. The user can enter the parameters of their intended mission, the orbital elements, the spacecraft characteristics, and Orbit.M would compute the ΔV necessary to counteract drag forces throughout the mission, while sizing it against your choices of thrusters (in the **"thrusters.txt"** file).
 
 
 
@@ -49,7 +49,7 @@ You can launch Orbit.M through the **orbitm.py** in the main directory (equivale
 
 You can fill in your spacecraft and orbit parameters through the GUI. The plotter will also plot thrusters of your choice as specified in the "thrusters.txt" file on the main Orbit.M directory.
 
-Now, you can hit **Run ORBITM**, and it will output a ΔV report as a text file, and plot the altitude profile and the locus of thruster requirements that satisfy your mission (in terms of the required fuel mass against specific impulse or ISP). Example plots are shown below, with plots in blue ran under the fast algorithm (Sam's), and plots in orange ran under the more precise orbit model in STK.
+Now, you can hit **Run ORBITM**, and it will output a ΔV report as a text file, and plot the altitude profile and the locus of thruster requirements that satisfy your mission (in terms of the required fuel mass against specific impulse or ISP). Example plots are shown below, with plots in blue ran under the fast algorithm (Sam's), and plots in orange ran under the more precise orbit model in STK. All manoeuvres are assumed to be impulsive, and triggered only when the nominal altitude crosses the orbit maintenance tolerance band.
 
 .. image:: https://raw.githubusercontent.com/sammmlow/ORBITM/master/docs/_images/orbmgui_full.jpg
 
@@ -67,6 +67,8 @@ This project is free, and open-source. If you would like to contribute to this p
 If you had felt that OrbitM was useful in your research, please do give the due credit and cite my paper or this project.
 
 Low, S. Y. W., &; Chia, Y. X. (2018). “Assessment of Orbit Maintenance Strategies for Small Satellites”, 32nd Annual AIAA/USU Conference on Small Satellites, Logan, Utah, Utah State University, USA.
+
+
 
 Contact
 -------

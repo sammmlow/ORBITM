@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>First Steps &mdash; ORBITM 1.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/orbitm_favicon.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Intepreting Results" href="docs_interpreting.html" />
+    <link rel="prev" title="Installation" href="docs_install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #222A35" >
+            <a href="index.html" class="icon icon-home"> ORBITM
+            <img src="_static/orbitm_favicon2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="docs_overview.html">An Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_interpreting.html">Intepreting Results</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Orbit Maintenance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs_orbmaint.html">Orbit Maintenance Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs_functions.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #222A35" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ORBITM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>First Steps</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/docs_firststep.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <img alt="_images/orbitm_logo.png" src="_images/orbitm_logo.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="first-steps">
+<h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline"></a></h1>
+<p>ORBITM can be launched simply by running the Python file <strong>orbitm.py</strong> in the main directory (equivalent to the directory on the master branch on ORBITM’s GitHub). You should see a GUI that looks like the one below, pop up:</p>
+<figure class="align-center" id="id1">
+<img alt="_images/orbmgui_blank.jpg" src="_images/orbmgui_blank.jpg" />
+<figcaption>
+<p><span class="caption-text">Figure 2.1 - ORBITM Graphical User Interface</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>As a first step, you can simply load the default input parameters by clicking “Load Config”. The parameters are actually saved in the <strong>config.txt</strong> file. Configuration parameters should be loaded through the GUI, and not manually updated through the <strong>config.txt</strong> file since then the software can’t check for string formatting errors (e.g. a negative drag coefficient that was typed into the config file manually and by accident would crash the program).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>An orbit eccentricity of exactly zero is not allowed, to prevent potential divide-by-zero issues during calculations. For near-perfectly circular orbits, set an arbitrarily small eccentricity number (e.g., 0.00001).</p>
+</div>
+<p>Second, you can choose which lifetime and maintenance simulator you would like to use. By default, the native <strong>“Sam’s Simulator”</strong> will be selected. If STK is selected, remember that <strong>a valid STK license for STK Integration and STK Astrogator is required.</strong></p>
+<p>Third, proceed to set the remainder of your orbit and spacecraft parameters. These parameters are self-explanatory. Some parameters are specific to ORBITM and are defined below:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Maintenance Tolerance Band</dt>
+<dd class="field-odd"><p>Threshold altitude that triggers an orbit raise (km).</p>
+</dd>
+<dt class="field-even">Frozen Repeat Ground Track</dt>
+<dd class="field-even"><p>Option to consider frozen repeat orbit maintenance.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The altitude value used as the reference with the <strong>Maintenance Tolerance Band</strong> is defined as the geodetic altitude. In <strong>“Sam’s Simulator”</strong> mode, this altitude is the Keplerian semi-major axis minus Earth’s equatorial radius. However, STK-mode accounts for the oblateness of the Earth, and the presence of other perturbing forces. Thus, in STK mode, the Earth-centered altitude often oscillates with the latitude and with time, even for a “circular orbit”.</p>
+<p>In order to prevent triggering a manoeuvre on the wrong rising or falling edge of the altitude profile, the STK mode triggers manoeuvres based on the <strong>Kozai-Izsak Mean Semi-Major Axis</strong> rather than the nominal altitude. It is acknowledged that this changes the definition for the “threshold altitude”, especially for highly elliptical orbits running in STK.</p>
+</div>
+<p>If the option for a <strong>Frozen Repeat Ground Track</strong> was selected, then the orbit raise will happen from the negative threshold below its initial altitude to a positive threshold above the initial altitude, and the thrusts will be done in perigee-apogee pairs. This minimises secular perturbations to the orbit mean eccentricity and the orbit nodal period. For example, if the <strong>Frozen Repeat Ground Track</strong> option was selected, with an initial altitude of 500km, and a threshold of 5km, the orbit raise will be triggered at 495km, and raised to 505km in two thrust pairs. Else, in the non-frozen repeat orbit maintenance case, the orbit raise will be triggered at 495km, and raised back to the original 500km.</p>
+<p>Finally, before running the simulation (<strong>Run ORBITM</strong>), check the <strong>“thrusters.txt”</strong> file on the main ORBITM directory, and add thruster specifications that you wish to size your missions against. Some thrusters are written inside this shortlist as an example. The purpose of this shortlist is to provide the program with the thruster specifications, so that the mission planner can graphically compare its Isp and fuel capacity to the suitability of the mission (as an output of the program).</p>
+<p>Now, you can run ORBITM. If you are a licensed STK user and you would like to use ORBITM to automate an orbit maintenance simulation in STK for you, make sure there are <strong>no</strong> running instances of STK before you run ORBITM in the STK 10 or 11 mode.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ORBITM considers only atmospheric drag and not albedo and radiation effects.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="docs_install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="docs_interpreting.html" class="btn btn-neutral float-right" title="Intepreting Results" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Samuel Y. W. Low.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXX-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-XXXXXXX-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
