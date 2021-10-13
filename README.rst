@@ -57,7 +57,10 @@ The above results were run for a 170kg satellite at 550km circular orbit. At thi
 
 For full documentation, please refer to the `Orbit.M Read-The-Docs. <https://orbitm.readthedocs.io/en/latest/>`_
 
+Original Sharing on ORBITM v1.0
+-------------------------------
 
+ORBITM v1.0 was released during the Open Source Cube Satellite Workshop 2020. The original presentation slides introducing `ORBITM v1.0 link is here. <https://events.libre.space/event/4/contributions/115/attachments/83/108/OrbitM_OSCW2020.pdf>`_
 
 Final Notes
 -----------
