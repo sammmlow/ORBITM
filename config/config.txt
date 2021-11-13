@@ -20,7 +20,7 @@
 ###############################################################################
 ~:
 ~: Input the orbit simulation program choice (1=Sam's, 2=STK10, 3=STK11).
-I: orbsim 2
+I: orbsim 1
 ~:
 ~: Input the Start Epoch String (e.g. 1-Jan-2012-12:00:00.000)
 I: tstart 1-Jan-2022-12:00:00.000
@@ -35,7 +35,7 @@ I: sc_Cd 2.2
 I: sc_Ad 2.28
 ~:
 ~: Input the Orbit Semi-Major Axis (km)
-I: orb_a 6936.137
+I: orb_a 6636.137
 ~: 
 ~: Input the Orbit Eccentricity (no units)
 I: orb_e 0.0001

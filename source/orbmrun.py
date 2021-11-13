@@ -250,10 +250,6 @@ def orbmrun(tstart, tfinal, sc_Cd, sc_area_d,
             lifetime_flag = True
             lifetime_dt = tstart_dt
     
-    # Reset the time.
-    tstart_dt = timestr2datetime(tstart)
-    total_duration = 0
-    
     # Check the status of the life time simulation.
     # lifetime_flag == True ==> orbit decay has occurred within 10 years.
     if lifetime_flag == True:
@@ -289,6 +285,10 @@ def orbmrun(tstart, tfinal, sc_Cd, sc_area_d,
         # Print the life time message.
         lifetime_str = 'Lifetime did not decay within the 10 year limit. \n'
         print(lifetime_str)
+    
+    # Reset the time.
+    tstart_dt = timestr2datetime(tstart)
+    total_duration = 0
     
     ##########################################################################
     ##########################################################################
