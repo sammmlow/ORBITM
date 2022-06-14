@@ -43,6 +43,7 @@ import datetime
 # Import local libraries
 from source import atmos
 from source import kepler
+from source import sun_moon_pos
 
 # To the User - for changes to program inputs, it is recommended to change 
 # the parameters in the ORBITM GUI, rather than through the `config.txt` 
@@ -141,18 +142,30 @@ def orbmrun(tstart, tfinal, sc_Cd, sc_area_d,
     # Read the final epoch string as a datetime object
     tfinal_dt = timestr2datetime(tfinal)
     
-    # Set the time step (default is 10 minutes)
-    tstep = 600
-    tstep_dt = datetime.timedelta(seconds=600)
+    # Set the time step (default is 60 minutes)
+    tstep = 3600
+    tstep_dt = datetime.timedelta(seconds=3600)
     
     ##########################################################################
     ##########################################################################
     
     # Define all useful constants and sub-functions needed to compute decay.
-    UNIGCONST = 6.67408e-11
+    UNIGCONST = 6.67430e-11
     EARTHMASS = 5.97237e24      # in kg
-    EARTHRADEQT = 6378.140      # in km
+    EARTHRADEQT = 6378.137      # in km
     MUU = UNIGCONST * EARTHMASS # GM
+    
+    def kep2cart(a, e, i, RAAN, omega, nu, mu):
+        p = a*(1-e**2) # semi-latus rectum, [km]
+        r = p/(1+e*np.cos(nu)) # orbit radius, [km]    
+        # h = np.sqrt(mu*a*(1-e^2)) # angular momentum    
+        x = r*(np.cos(RAAN)*np.cos(omega+nu) - np.sin(RAAN)*np.sin(omega+nu)*np.cos(i)) # x-position, [km]
+        y = r*(np.sin(RAAN)*np.cos(omega+nu) + np.cos(RAAN)*np.sin(omega+nu)*np.cos(i)) # y-position, [km]
+        z = r*(np.sin(i)*np.sin(omega+nu)) # z-position, [km]    
+        cart = [x,y,z] # cartesian state vector
+        return cart
+    
+    cart_state = kep2cart(orb_a, orb_e, orb_i, orb_R, orb_w, orb_m, MUU)
     
     # Keplerian orbit period, with SMA as the semi-major axis (m)
     def OrbitPeriod( SMA ):
@@ -167,13 +180,34 @@ def orbmrun(tstart, tfinal, sc_Cd, sc_area_d,
         ALT = R - ( EARTHRADEQT * 1000 )  # Altitude (m)
         A2M = sc_area_d / sc_mass         # Area to mass ratio
         VEL = Velocity( R, SMA )          # Velocity magnitude (m/s)
-        ATM = atmos.density( ALT / 1000 ) # Density (kg/m^3)
+        ATM = atmos.density( ALT / 1000 ) # Density (kg/m^3)                
         return 0.5 * ATM * sc_Cd * A2M * (VEL**2)
     
+    r_factor = 0.5                        # Reflection factor    
+    def SRPAccel( r_factor ):        
+        A2M = sc_area_d / sc_mass         # Area to mass ratio
+        return 4.65e-6 * A2M * (1+r_factor) 
+    
+    def sun_moonAccel(date,cart_state):       
+        cart_state = np.array(cart_state)*1e3 # Satellite state
+        sun_pos = (sun_moon_pos.approxECISunPosition(date))[0]            # Sun position
+        moon_pos = np.array(sun_moon_pos.approxECIMoonPosition(date))*1e3 # Moon position  
+        mu_sun = 1.32712440042e20  # Solar gravitational paramater
+        mu_moon = 4.9048695e12     # Lunar gravitational paramater
+        # Relative position vector of satellite w.r.t. point mass 
+        d_sun = cart_state - sun_pos 
+        d_moon = cart_state - moon_pos 
+        # Acceleration 
+        a_sun = -mu_sun*(d_sun/(np.linalg.norm(d_sun)**3)+sun_pos/(np.linalg.norm(sun_pos)**3))
+        a_moon = -mu_moon*(d_moon/(np.linalg.norm(d_moon)**3)+moon_pos/(np.linalg.norm(moon_pos)**3))        
+        return np.linalg.norm(a_sun)+np.linalg.norm(a_moon)
+        
     # The decay rate of the altitude (dR/dt) in meters (see reference).
-    def DecayRate( R, SMA ):
+    def DecayRate(R,SMA,datetime):
         DragAcceleration = DragAccel( R, SMA )
-        return -1 * DragAcceleration * OrbitPeriod(SMA) / math.pi
+        SRP_Accel = SRPAccel(r_factor)
+        SM_Accel = sun_moonAccel(datetime,cart_state)
+        return -1 * (DragAcceleration+SRP_Accel+SM_Accel) * OrbitPeriod(SMA) / math.pi
     
     # Define a function that computes the Delta-V needed for Hohmann transfer.
     def HohmannTransferDV(rd,maintenance_tolerance,maintenance_fro):
@@ -238,7 +272,7 @@ def orbmrun(tstart, tfinal, sc_Cd, sc_area_d,
         rd = smaxis*(1-orb_e*np.cos(eccnanom))
         
         # Then, we can compute the decay rate (m/s), and apply it to the SMA.
-        decay_rate = DecayRate(rd, smaxis)
+        decay_rate = DecayRate(rd, smaxis,tstart_dt)
         decay_alt = decay_rate * (tstep)
         smaxis += decay_alt
         
@@ -326,7 +360,7 @@ def orbmrun(tstart, tfinal, sc_Cd, sc_area_d,
         rd = smaxis*(1-orb_e*np.cos(eccnanom))
         
         # Then, we can compute the decay rate (m/s), and apply it to the SMA.
-        decay_rate = DecayRate(rd, smaxis)
+        decay_rate = DecayRate(rd, smaxis,tstart_dt)
         decay_alt = decay_rate * tstep
         smaxis += decay_alt
         
