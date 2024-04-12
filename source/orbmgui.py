@@ -32,7 +32,6 @@ from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
 
 # Import local libraries
 from source.orbmrun import orbmrun
-from source.orbmstk import orbmstk
 
 class RunGUI:
     
@@ -1368,6 +1367,7 @@ class RunGUI:
                 # sma   -> 1xN list comprising mean semi-major axis values
                 # dv    -> Float value for total Delta-V required
                 # imp   -> Float value for total impulse required
+                from source.orbmstk import orbmstk
                 
                 epoch, alt, sma, dv, imp = orbmstk( mode, ts, tf, Cd, Ad,
                                                     oa, oe, oi, oR, ow, oM,
