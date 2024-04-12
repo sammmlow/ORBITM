@@ -24,6 +24,8 @@
 import datetime
 import numpy as np
 import tkinter as tk
+import os
+
 from PIL import Image, ImageTk
 from os.path import dirname, abspath
 from matplotlib.figure import Figure
@@ -128,8 +130,8 @@ class RunGUI:
         #####################################################################
         
         # Define the path to the ORBITM logo file.
-        orbitm_logo = dirname(dirname(abspath(__file__)))
-        orbitm_logo = orbitm_logo + '\docs\_static\orbitm_logo.png'
+        orbitm_path = dirname(dirname(abspath(__file__)))
+        orbitm_logo = os.path.join(orbitm_path, 'docs', '_static', 'orbitm_logo.png')
         
         # Get the users current screen height.
         screen_height = master.winfo_screenheight()
@@ -405,7 +407,7 @@ class RunGUI:
         
         # Else, continue with loading the configuration file.
         cwd = dirname(dirname(abspath(__file__))) # Current working directory
-        iwd = cwd + '\config\config.txt' # Inputs files
+        iwd = os.path.join(cwd, 'config', 'config.txt') # Inputs files
         inputfile = open(iwd,'r') # Open the config.txt file
         inps = {} # Create a dictionary to store all the input 
         integers = [ 'orbsim' ]
@@ -813,7 +815,7 @@ class RunGUI:
         
         # Else, continue with saving the configurations.
         cwd = dirname(dirname(abspath(__file__))) # Current working directory
-        iwd = cwd + '\config\config.txt' # Inputs files
+        iwd = os.path.join(cwd, 'config', 'config.txt') # Inputs files
         input_r = open(iwd,'r') # Open the config.txt file
         record = [] # Array to record the strings
         
